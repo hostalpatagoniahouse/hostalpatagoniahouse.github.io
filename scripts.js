@@ -1,7 +1,13 @@
 var SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 
-document.getElementById('client-id').value = localStorage.clientId;
-document.getElementById('document-id').value = localStorage.documentId;
+if (localStorage.clientId) {
+  document.getElementById('client-id').value = localStorage.clientId;
+  //te quiero
+}
+
+if (localStorage.documentId) {
+  document.getElementById('document-id').value = localStorage.documentId;
+}
 
 function getClientId() {
   var clientId = document.getElementById('client-id').value;
