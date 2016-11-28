@@ -1,11 +1,18 @@
 var SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 
+document.getElementById('client-id').value = localStorage.clientId;
+document.getElementById('document-id').value = localStorage.documentId;
+
 function getClientId() {
-  return document.getElementById('client-id').value;
+  var clientId = document.getElementById('client-id').value;
+  localStorage.clientId = clientId;
+  return clientId;
 }
 
 function getDocumentId() {
-  return document.getElementById('document-id').value;
+  var documentId = document.getElementById('document-id').value;
+  localStorage.documentId = documentId;
+  return documentId;
 }
 /**
  * Handle response from authorization server.
@@ -63,6 +70,7 @@ function addBookingRow(data) {
   gapi.client.sheets.spreadsheets.values.update({
     spreadsheetId: getDocumentId(),
     range: 'Hoja 2!A1:D1',
+    majorDimension: 'ROWS',
     valueInputOption: 'RAW',
     values: [[data.name, data.date, data.days, data.room]]
   }).then(function(response) {
