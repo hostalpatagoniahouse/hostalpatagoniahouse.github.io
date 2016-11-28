@@ -16,6 +16,10 @@ function checkAuth() {
     }, handleAuthResult);
 }
 
+
+function getClientId() {
+  return document.getElementById('client-id').value;
+}
 /**
  * Handle response from authorization server.
  *
