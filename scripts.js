@@ -1,7 +1,11 @@
-var SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
+var SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 
 function getClientId() {
   return document.getElementById('client-id').value;
+}
+
+function getDocumentId() {
+  return document.getElementById('document-id').value;
 }
 /**
  * Handle response from authorization server.
@@ -39,29 +43,30 @@ function handleAuthClick(event) {
 function loadSheetsApi() {
   var discoveryUrl =
       'https://sheets.googleapis.com/$discovery/rest?version=v4';
-  gapi.client.load(discoveryUrl).then(listMajors);
+  gapi.client.load(discoveryUrl).then(testChange);
+}
+
+function testChange() {
+  addBookingRow({
+    name: 'Test',
+    date: Date.now(),
+    days: 3,
+    room: 'X'
+  });
 }
 
 /**
  * Print the names and majors of students in a sample spreadsheet:
  * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  */
-function listMajors() {
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-    range: 'Class Data!A2:E',
+function addBookingRow(data) {
+  gapi.client.sheets.spreadsheets.values.update({
+    spreadsheetId: getDocumentId(),
+    range: 'Hoja 2!A1:D1',
+    valueInputOption: 'RAW',
+    values: [[data.name, data.date, data.days, data.room]]
   }).then(function(response) {
-    var range = response.result;
-    if (range.values.length > 0) {
-      appendPre('Name, Major:');
-      for (i = 0; i < range.values.length; i++) {
-        var row = range.values[i];
-        // Print columns A and E, which correspond to indices 0 and 4.
-        appendPre(row[0] + ', ' + row[4]);
-      }
-    } else {
-      appendPre('No data found.');
-    }
+    console.log(response);
   }, function(response) {
     appendPre('Error: ' + response.result.error.message);
   });
