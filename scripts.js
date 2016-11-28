@@ -62,7 +62,7 @@ function loadSheetsApi() {
 function testChange() {
   addBookingRow({
     name: 'La Gatita',
-    date: Date.now(),
+    date: toSheetsDate(Date.now()),
     days: 3,
     room: 'Si'
   });
