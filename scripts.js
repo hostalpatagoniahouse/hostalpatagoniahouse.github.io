@@ -61,10 +61,10 @@ function loadSheetsApi() {
 
 function testChange() {
   addBookingRow({
-    name: 'Test',
+    name: 'La Gatita',
     date: Date.now(),
     days: 3,
-    room: 'X'
+    room: 'Si'
   });
 }
 
