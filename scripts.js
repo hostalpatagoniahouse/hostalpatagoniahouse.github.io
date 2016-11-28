@@ -73,7 +73,7 @@ function testChange() {
  * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  */
 function addBookingRow(data) {
-  gapi.client.sheets.spreadsheets.values.update({
+  gapi.client.sheets.spreadsheets.values.append({
     spreadsheetId: getDocumentId(),
     range: 'Hoja 2!A1:D1',
     majorDimension: 'ROWS',
