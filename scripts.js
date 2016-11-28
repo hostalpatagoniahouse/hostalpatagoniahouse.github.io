@@ -97,3 +97,17 @@ function appendPre(message) {
   var textContent = document.createTextNode(message + '\n');
   pre.appendChild(textContent);
 }
+
+function toSheetsDate(d) {
+  var epoch = new Date(1899,11,30);
+  var msPerDay = 8.64e7;
+
+  return (d - epoch) / msPerDay;
+}
+
+function fromSheetsDate(d) {
+  var epoch = new Date(1899,11,30);
+  var msPerDay = 8.64e7;
+
+  return (d * msPerDay) + epoch;
+}
