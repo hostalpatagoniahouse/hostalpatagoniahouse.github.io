@@ -6,23 +6,20 @@ window.utils = (function() {
   utils.error = error;
   utils.getAlphabet = getAlphabet;
   
+  var epoch = new Date(1899,11,30);
+  var msPerDay = 8.64e7;
+  
   return utils;
   
   //////////////////////////
   
   /* To convert a javascript timestamp to a google sheets epoch date */
   function toSheetsDate(d) {
-    var epoch = new Date(1899,11,30);
-    var msPerDay = 8.64e7;
-
     return (d - epoch) / msPerDay;
   }
   
   /* And the opposite */
   function fromSheetsDate(d) {
-    var epoch = new Date(1899,11,30);
-    var msPerDay = 8.64e7;
-
     return (d * msPerDay) + epoch;
   }
   
