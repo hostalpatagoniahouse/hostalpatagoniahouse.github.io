@@ -42,10 +42,10 @@ window.sheets = (function () {
   
   function convertToBookingRow(data) {
     return [
-      name: data.name,
-      date: utils.toSheetsDate(data.date),
-      days: data.days,
-      room: data.room
+      data.name,
+      utils.toSheetsDate(data.date),
+      data.days,
+      data.room
     ];
   }
 })();
