@@ -1,3 +1,5 @@
+'use strict';
+
 window.utils = (function() {
   var utils = {};
   
