@@ -6,16 +6,28 @@
     <title>Patagonia House - Add Guest</title>
   </head>
   <body>
-    <div id="authorize-div">
-      <span>Authorize access to Google Sheets API</span>
-      <input type="text" id="client-id" placeholder="Google API Client ID" />
-      <input type="text" id="document-id" placeholder="Document ID" />
-      <!--Button for the user to click to initiate auth sequence -->
-      <button id="authorize-button">
-        Begin
+    <div id="config-section">
+      <div>
+        <label for="api-client-id-input">Google API Client ID</label>
+        <input type="text" id="api-client-id-input" />
+      </div>
+      
+      <div>
+        <label for="booking-sheet-id-input">Booking Sheet ID</label>
+        <input type="text" id="booking-sheet-id-input" />
+      </div>
+      
+      <div>
+        <label for="booking-sheet-id-input">Booking Sheet ID</label>
+        <input type="text" id="booking-sheet-id-input" />
+      </div>
+      
+      <button id="save-config-button">
+        Save Config
       </button>
     </div>
-    <div id="entry-form" style="display: none;">
+    
+    <div id="entry-section" style="display: none;">
       <div>
         <label for="name-input">Name</label>
         <input type="text" id="name-input" />
