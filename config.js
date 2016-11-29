@@ -10,15 +10,16 @@ window.config = (function() {
     bookingSheet: null
   };
   
-  config.setConfig = setConfig;
+  config.refreshConfig = refreshConfig;
   
   return config;
   
   /////////////////////////////////
   
-  function setConfig(data) {
-    config.apiClientId = data.apiClientId;
-    config.bookingSheetId = data.bookingSheetId;
-    config.bookingSheet = data.bookingSheet;
+  /* Refresh the config from localStorage */
+  function refreshConfig() {
+    config.apiClientId = localStorage.apiClientId;
+    config.bookingSheetId = localStorage.bookingSheetId;
+    config.bookingSheet = localStorage.bookingSheet;
   }
 })();
