@@ -2,7 +2,7 @@
 
 (function () {
   angular.module("app")
-    .factory("sheetsService", function (utils) {
+    .factory("sheetsService", function (utils, $rootScope, SCOPES, SHEETS_API_DISCOVERY_URL) {
       var sheetsService = {};
 
       sheetsService.authorize = authorize;
@@ -15,20 +15,20 @@
       /* Authorize the sheets API */
       function authorize() {
         return gapi.auth.authorize(
-          { client_id: config.apiClientId, scope: config.SCOPES, immediate: false }
+          { client_id: $rootScope.config.apiClientId, scope: SCOPES, immediate: false }
         ).then(loadSheetsApi);
       }
 
       /* Load the sheets client library. Returns a promise */
       function loadSheetsApi() {
-        return gapi.client.load(config.SHEETS_API_DISCOVERY_URL);
+        return gapi.client.load(SHEETS_API_DISCOVERY_URL);
       }
 
       /* Add a booking row with the data passed */
       function addBookingRow(data) {
         gapi.client.sheets.spreadsheets.values.append({
-          spreadsheetId: config.bookingSheetId,
-          range: config.bookingSheet + '!A1:D1',
+          spreadsheetId: $rootScope.config.bookingSheetId,
+          range: $rootScope.config.bookingSheet + '!A1:D1',
           majorDimension: 'ROWS',
           valueInputOption: 'RAW',
           values: [convertToBookingRow(data)]
