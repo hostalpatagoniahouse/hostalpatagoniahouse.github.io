@@ -45,7 +45,7 @@ window.sheets = (function () {
       data.name,
       utils.toSheetsDate(data.date),
       data.days,
-      data.room
+      data.bed
     ];
   }
 })();
