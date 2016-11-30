@@ -13,11 +13,8 @@ window.sheets = (function () {
   /* Authorize the sheets API */
   function authorize() {
     return gapi.auth.authorize(
-      { client_id: config.apiClientId, scope: config.SCOPES, immediate: true }
-    ).then(loadSheetsApi, function (response) {
-      console.log('Error authorize!');
-      console.log(response);
-    });
+      { client_id: config.apiClientId, scope: config.SCOPES, immediate: false }
+    ).then(loadSheetsApi);
   }
 
   /* Load the sheets client library. Returns a promise */
