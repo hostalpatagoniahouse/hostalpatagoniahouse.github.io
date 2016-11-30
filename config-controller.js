@@ -18,7 +18,9 @@
           localStorage[field] = $rootScope.config[field];
         });
         
+        console.log("before");
         sheetsService.authorize().then(function () {
+          console.log("here");
           $rootScope.$apply("configComplete = true;");
         });
       }
