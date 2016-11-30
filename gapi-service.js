@@ -6,23 +6,9 @@
       var gapiService = {};
       
       gapiService.authorize = authorize;
-      
-      var gapiValueBase = gapi.client.sheets.spreadsheets.values
+    
+      // These fuunctions are impplemented after the API is loaded
       var gapiValueFunctions = ["append", "get"];
-      
-      gapiValueFunctions.forEach(function (fnName) {
-        gapiService[fnName] = function () {
-          var deferred = $q.defer();
-          
-          gapiValueBase[fnName].apply(gapiValueBase, arguments).then(function (response) {
-            deferred.resolve(response)
-          }, function (response) {
-            deferred.reject (response);
-          });
-          
-          return deferred.promise;
-        }
-      });
       
       return gapiService;
       
@@ -45,7 +31,25 @@
 
       /* Load the sheets client library. Returns a promise */
       function loadSheetsApi() {
-        return gapi.client.load(SHEETS_API_DISCOVERY_URL);
+        return gapi.client.load(SHEETS_API_DISCOVERY_URL).then(implementFunctions);
+      }
+    
+      function implementFunctions () {
+        var gapiValueBase = gapi.client.sheets.spreadsheets.values
+        
+        gapiValueFunctions.forEach(function (fnName) {
+          gapiService[fnName] = function () {
+            var deferred = $q.defer();
+
+            gapiValueBase[fnName].apply(gapiValueBase, arguments).then(function (response) {
+              deferred.resolve(response)
+            }, function (response) {
+              deferred.reject (response);
+            });
+
+            return deferred.promise;
+          }
+        });
       }
     });
 })();
