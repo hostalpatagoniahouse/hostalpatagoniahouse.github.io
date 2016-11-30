@@ -68,13 +68,10 @@
           }
           
           // Check the number of empty cells
-          console.log(response.result.values[0]);
-          var availableBeds = response.result.values[0].filter(function (x) { return x; }).length;
+          var availableBeds = response.result.values[0].filter(function (x) { return !x; }).length;
           
           // Add the trailing cells that were not returned because they were empty
-          console.log(room.beds.length);
           availableBeds += room.beds.length - response.result.values[0].length;
-          console.log(room.name, "allEmpty", availableBeds);
           
           // Check if we have enough beds available
           if (availableBeds >= numberBeds) {
