@@ -21,29 +21,32 @@
   </head>
   
   <body>
-    <form ng-controller="ConfigController" ng-hide="configComplete" ng-submit="saveConfig()">
-      <md-input-container>
-        <label>Google API Client ID</label>
-        <input type="text" ng-model="config.apiClientId" autofocus />
-      </md-input-container>
+    <md-content layout-padding>
+      <form ng-controller="ConfigController" ng-hide="configComplete" ng-submit="saveConfig()">
+        <md-input-container>
+          <label>Google API Client ID</label>
+          <input type="text" ng-model="config.apiClientId" autofocus />
+        </md-input-container>
+
+        <md-input-container>
+          <label>Booking Sheet ID</label>
+          <input type="text" ng-model="config.bookingSheetId" />
+        </md-input-container>
+
+        <md-input-container>
+          <label>Booking Sheet Name</label>
+          <input type="text" ng-model="config.bookingSheet" />
+        </md-input-container>
+
+        <md-input-container>
+          <label>Rooms Sheet ID</label>
+          <input type="text" ng-model="config.roomsSheetId" />
+        </md-input-container>
+
+        <md-button type="submit"class="md-primary">Save Config</md-button>
+      </form>
+    </md-content>
       
-      <div>
-        <label for="booking-sheet-id-input">Booking Sheet ID</label>
-        <input type="text" id="booking-sheet-id-input" ng-model="config.bookingSheetId" />
-      </div>
-      
-      <div>
-        <label for="booking-sheet-input">Booking Sheet Name</label>
-        <input type="text" id="booking-sheet-input" ng-model="config.bookingSheet" />
-      </div>
-      
-      <div>
-        <label for="rooms-sheet-id-input">Rooms Sheet ID</label>
-        <input type="text" id="rooms-sheet-id-input" ng-model="config.roomsSheetId" />
-      </div>
-      
-      <button type="submit">Save Config</button>
-    </form>
     
     <form ng-controller="EntryController" ng-show="configComplete" ng-submit="addEntry()">
       <div>
