@@ -7,6 +7,7 @@
 
       sheetsService.authorize = authorize;
       sheetsService.addBookingRow = addBookingRow;
+      sheetsService.availableRooms = availableRooms;
 
       return sheetsService;
 
@@ -29,8 +30,6 @@
         gapi.client.sheets.spreadsheets.values.append({
           spreadsheetId: $rootScope.config.bookingSheetId,
           range: $rootScope.config.bookingSheet + '!A1:D1',
-          majorDimension: 'ROWS',
-          valueInputOption: 'RAW',
           values: [convertToBookingRow(data)]
 
         }).then(function(response) {
@@ -50,5 +49,30 @@
           data.bed
         ];
       }
+    
+      /* Check available rooms for a particular date */
+      function availableRooms(date) {
+        gapi.client.sheets.spreadsheets.values.get({
+          spreadsheetId: $rootScope.config.roomsSheetId,
+          range: sheetName + '!A1:D1',
+          values: [convertToBookingRow(data)]
+
+        }).then(function(response) {
+          console.log(response);
+        });
+      }
     });
+  
+    function getSheetName(date) {
+      return (utils.getMonthName(date) + utils.getShortYear(date));
+    }
+  
+    function getColumn(date) {
+      gapi.client.sheets.spreadsheets.values.get({
+          spreadsheetId: $rootScope.config.roomsSheetId,
+          range: getsheetName(date) + '!A1:CC1'
+        }).then(function(response) {
+          console.log(response);
+        });
+    }
 })();
