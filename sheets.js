@@ -54,18 +54,18 @@
       function availableRooms(date) {
         return getColumn(date);
       }
+    
+      function getSheetName(date) {
+        return (utils.getMonthName(date) + utils.getShortYear(date));
+      }
+  
+      function getColumn(date) {
+        gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: $rootScope.config.roomsSheetId,
+            range: getSheetName(date) + '!A1:CC1'
+          }).then(function(response) {
+            console.log(response);
+          });
+      }
     });
-  
-    function getSheetName(date) {
-      return (utils.getMonthName(date) + utils.getShortYear(date));
-    }
-  
-    function getColumn(date) {
-      gapi.client.sheets.spreadsheets.values.get({
-          spreadsheetId: $rootScope.config.roomsSheetId,
-          range: getSheetName(date) + '!A1:CC1'
-        }).then(function(response) {
-          console.log(response);
-        });
-    }
 })();
