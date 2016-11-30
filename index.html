@@ -15,7 +15,7 @@
   </head>
   
   <body>
-    <form ng-controller="ConfigController" ng-hide="configComplete" ng-submit="saveConfig()">
+    <form ng-controller="ConfigController" ng-hide="configComplete">
       <div>
         <label for="api-client-id-input">Google API Client ID</label>
         <input type="text" id="api-client-id-input" ng-model="config.apiClientId" autofocus />
@@ -31,9 +31,7 @@
         <input type="text" id="booking-sheet-input" ng-model="config.bookingSheet" />
       </div>
       
-      <button type="submit">
-        Save Config
-      </button>
+      <button ng-click="saveConfig()">Save Config</button>
     </form>
     
     <form ng-controller="EntryController" ng-show="configComplete" ng-submit="addEntry()">
