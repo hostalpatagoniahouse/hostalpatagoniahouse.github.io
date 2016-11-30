@@ -15,6 +15,7 @@ window.sheets = (function () {
     return gapi.auth.authorize(
       { client_id: config.apiClientId, scope: config.SCOPES, immediate: false }
     ).then(loadSheetsApi, function (response) {
+      console.log('Error authorize!');
       console.log(response);
     });
   }
