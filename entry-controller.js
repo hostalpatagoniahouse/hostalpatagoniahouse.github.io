@@ -4,16 +4,10 @@
   angular.module("app")
     .controller("EntryController", function ($scope, $rootScope, utils, sheetsService) {
       $scope.entry = {};
+      $scope.entry.date = Date.now();
     
       $scope.addEntry = function () {
-        sheetsService.addBookingRow(getFormattedEntry());
+        sheetsService.addBookingRow($scope.entry);
       };
-    
-      function getFormattedEntry() {
-        var formattedEntry = angular.copy($scope.entry);
-        formattedEntry.date = utils.toSheetsDate(Date.now());
-        
-        return formattedEntry;
-      }
     });
 })();
