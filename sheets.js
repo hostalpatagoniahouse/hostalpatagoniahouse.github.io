@@ -49,7 +49,7 @@
         });
       }
     
-      /* Checks a room availability, returning a promise that is resolved with the room object with only available beds if available, or false if not */
+      /* Checks a room availability, returning a promise that is resolved with the room object if available, or false if not */
       function checkRoomAvailability(room, dateColumn, numberBeds, date) {
         if (room.beds.length < numberBeds) {
           var deferred = $q.defer();
@@ -57,14 +57,28 @@
           return deferred.promise;
         }
         
-        console.log(room.name, getSheetName(date) + "!" + dateColumn + room.startRow + ":" + dateColumn + (room.startRow + room.beds.length));
         return gapiService.get({
           spreadsheetId: $rootScope.config.roomsSheetId,
            range: getSheetName(date) + "!" + dateColumn + room.startRow + ":" + dateColumn + (room.startRow + room.beds.length),
            majorDimension: "COLUMNS"
         }).then(function (response) {
-          console.log(response);
-          return response.result.values[0];
+          // If there are no values, all cells are empty and the room is totally available}
+          if (!response.result.values) {
+            return room;
+          }
+          
+          // Check the number of empty cells
+          var availableBeds = response.result.values[0].filter(function (x) { return x; }).length;
+          
+          // Add the trailing cells that were not returned because they were empty
+          availableBeds += room.beds.length - response.result.values[0].length;
+          
+          // Check if we have enough beds available
+          if (availableBeds >= numberBeds) {
+            return room;
+          } else {
+            return false
+          }
         });
       }
     
