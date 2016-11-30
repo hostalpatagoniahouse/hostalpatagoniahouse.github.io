@@ -52,11 +52,64 @@
     
       /* Check available rooms for a particular date */
       function availableRooms(date) {
-        return getColumn(date);
+        console.log(getRooms(date));
       }
     
       function getSheetName(date) {
         return (utils.getMonthName(date) + utils.getShortYear(date));
+      }
+      
+       /**
+         * Returns an array of room objects. Each contains: 
+         *    - name: the room name
+         *    - beds: an array of bed objects, each with:
+         *      - name: the bed name
+         *      - row: the number of the row for the bed
+         */
+      function getRooms(date) {
+        // get the first column of the sheet for a particular month - this should contain all the room names. Room names start with "HAB"
+        gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: $rootScope.config.roomsSheetId,
+            range: getSheetName(date) + '!A1:A100',
+            majorDimension: "COLUMNS"
+          
+          }).then(function(response) {
+            var rooms = [];
+          
+            // run through the cells, identiyfying and adding rooms
+            response.result.values[0].forEach(function (cell, index) {
+              
+              // Rooms should start with "HAB" and have a - character separating the room name and the bed name
+              // process the cell only if these conditions are met
+              if (!(cell.substring(0, 3) === "HAB" && cell.indexOf("-") > -1)) {
+                return;
+              }
+              
+              var splitCell = cell.split("-");
+              var roomName = splitCell.shift().trim();
+              var bedObj = {
+                name: splitCell.join("-").trim(),
+                row: index + 1
+              };
+              
+              var existingRoom = rooms.find(function (room) { 
+                return room.name === roomName
+              });
+              
+              // If the room has already been added
+              if (existingRoom) {
+                existingRoom.beds.push(bedObj);
+              } else {
+                // Otherwise add a new room object
+                rooms.push({
+                  name: roomName,
+                  beds: [bedObj]
+                });
+              } 
+            });
+           
+            return rooms;
+          });
       }
       
       /* Get the column number within the sheet to look at for a particular date */
