@@ -8,7 +8,7 @@
       gapiService.authorize = authorize;
     
       // These fuunctions are impplemented after the API is loaded
-      var gapiValueFunctions = ["append", "get"];
+      var gapiValueFunctions = ["append", "get", "batchGet"];
       
       return gapiService;
       
