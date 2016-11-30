@@ -108,7 +108,7 @@
               var bedName = splitCell.join("-").trim();
               
               // If this belongs to the previous room
-              if (rooms[rooms.length - 1].name = roomName) {
+              if (rooms.length > 0 && rooms[rooms.length - 1].name === roomName) {
                 rooms[rooms.length - 1].beds.push(bedName);
               } else {
                 // Otherwise add a new room object
