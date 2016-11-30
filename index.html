@@ -23,7 +23,7 @@
   
   <body>
     <div layout-padding>
-      <md-content ng-controller="ConfigController" ng-hide="configComplete" class="base-container md-whiteframe-z1">
+      <div ng-controller="ConfigController" ng-hide="configComplete" class="base-container md-whiteframe-z1">
         <md-toolbar class="md-primary">
           <div class="md-toolbar-tools">
             <h2>Configuration</h2>
@@ -61,9 +61,9 @@
             <md-button type="submit" class="md-raised md-primary">Continue</md-button>
           </div>
         </form>
-      </md-content>
+      </div>
 
-      <md-content layout-padding ng-controller="EntryController" ng-show="configComplete" class="base-container md-whiteframe-z1">
+      <div ng-controller="EntryController" ng-show="configComplete" class="base-container md-whiteframe-z1">
         <md-toolbar class="md-primary">
           <div class="md-toolbar-tools">
             <h2>Add booking</h2>
@@ -89,7 +89,7 @@
             <md-button type="submit" class="md-raised md-primary">Add</md-button>
           </div>
         </form>
-      </md-content>
+      </div>
     </div>
   </body>
 </html>
