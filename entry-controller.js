@@ -9,5 +9,10 @@
       $scope.addEntry = function () {
         sheetsService.addBookingRow($scope.entry);
       };
+    
+      $scope.checkDates = function () {
+        console.log(entry.date);
+        sheetsService.availableRooms(entry.date);
+      }
     });
 })();
