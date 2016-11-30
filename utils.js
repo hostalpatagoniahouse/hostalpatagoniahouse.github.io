@@ -8,7 +8,7 @@
       utils.toSheetsDate = toSheetsDate;
       utils.fromSheetsDate = fromSheetsDate;
       utils.error = error;
-      utils.getAlphabet = getAlphabet;
+      utils.getColumnLetter = getColumnLetter;
       utils.getMonthName = getMonthName;
       utils.getShortYear = getShortYear;
 
@@ -34,9 +34,16 @@
         console.log('Error: ' + message);
       }
 
-      /* Return the nth alphabet (uppercase). For n = 1 returns A */
-      function getAlphabet(n) {
-        return String.formCharCode(64 + n);
+      /* Return the nth column letter in a spreadsheet, starting from n=0 */
+      function getColumnLetter(n) {
+        var lastLetter = String.fromCharCode(65 + (n % 26));
+        var remaining = Math.floor(n / 26) - 1;
+        
+        if (remaining < 0) {
+          return lastLetter;
+        } else {
+          return getColumnLetter(remaining) + lastLetter;
+        }
       }
     
       /* Get spanish month name from date */
