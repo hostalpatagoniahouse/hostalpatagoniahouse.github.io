@@ -3,7 +3,7 @@
 (function () {
   angular.module("app")
     .controller("ConfigController", function ($scope, $rootScope, sheetsService) {
-      var configInputs = ["apiClientId", "bookingSheetId", "bookingSheet"];
+      var configInputs = ["apiClientId", "bookingSheetId", "bookingSheet", "roomsSheetId"];
     
       $rootScope.config = {};
       
