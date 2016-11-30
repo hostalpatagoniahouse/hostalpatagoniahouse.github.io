@@ -52,14 +52,7 @@
     
       /* Check available rooms for a particular date */
       function availableRooms(date) {
-        gapi.client.sheets.spreadsheets.values.get({
-          spreadsheetId: $rootScope.config.roomsSheetId,
-          range: sheetName + '!A1:D1',
-          values: [convertToBookingRow(data)]
-
-        }).then(function(response) {
-          console.log(response);
-        });
+        return getColumn(date);
       }
     });
   
