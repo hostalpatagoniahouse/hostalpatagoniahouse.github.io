@@ -1,25 +1,34 @@
 <!DOCTYPE html>
-<html ng-app="PatagoniaHouse">
+<html ng-app="app">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Patagonia House - Add Guest</title>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="https://apis.google.com/js/client.js"></script>
+    <script src="/app.js"></script>
+    <script src="/config-controller.js"></script>
+    <script src="/utils.js"></script>
+    <script src="/sheets.js"></script>
+    <script src="/entry-controller.js"></script>
   </head>
+  
   <body ng-controller="MainController">
     <form ng-controller="ConfigController" ng-hide="configComplete" ng-submit="saveConfig()">
       <div>
         <label for="api-client-id-input">Google API Client ID</label>
-        <input type="text" id="api-client-id-input" ng-model="apiClientId" autofocus />
+        <input type="text" id="api-client-id-input" ng-model="config.apiClientId" autofocus />
       </div>
       
       <div>
         <label for="booking-sheet-id-input">Booking Sheet ID</label>
-        <input type="text" id="booking-sheet-id-input" ng-model="bookingSheetId" />
+        <input type="text" id="booking-sheet-id-input" ng-model="config.bookingSheetId" />
       </div>
       
       <div>
         <label for="booking-sheet-input">Booking Sheet Name</label>
-        <input type="text" id="booking-sheet-input" ng-model="bookingSheet" />
+        <input type="text" id="booking-sheet-input" ng-model="config.bookingSheet" />
       </div>
       
       <button type="submit">
@@ -27,20 +36,20 @@
       </button>
     </form>
     
-    <div id="entry-section" style="display: none;">
+    <form ng-controller="EntryController" ng-show="configComplete" ng-submit="addEntry()">
       <div>
         <label for="name-input">Name</label>
-        <input type="text" id="name-input" />
+        <input type="text" id="name-input" ng-model="entry.name" />
       </div>
       
       <div>
         <label for="days-input">Days</label>
-        <input type="number" id="days-input" />
+        <input type="number" id="days-input" ng-model="entry.days" />
       </div>
       
       <div>
         <label for="bed-input">Bed</label>
-        <select id="bed-input">
+        <select id="bed-input" ng-model="entry.bed">
           <option>1A</option>
           <option>1B</option>
           <option>2A</option>
@@ -48,16 +57,7 @@
         </select>
       </div>
       
-      <button id="add-button">Add</button>
-    </div>
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
-    <script src="https://apis.google.com/js/client.js"></script>
-    <script src="/config.js"></script>
-    <script src="/utils.js"></script>
-    <script src="/sheets.js"></script>
-    <script src="/main-controller.js"></script>
-    <script src="/config-controller.js"></script>
-    <script src="/entry-controller.js"></script>
+      <button type="submit">Add</button>
+    </form>
   </body>
 </html>
