@@ -2,7 +2,7 @@
 
 (function () {
   angular.module("app")
-    .controller("ConfigController", function ($scope, $rootScope, sheetsService) {
+    .controller("ConfigController", function ($scope, $rootScope, gapiService) {
       var configInputs = ["apiClientId", "bookingSheetId", "bookingSheet", "roomsSheetId"];
     
       $rootScope.config = {};
@@ -18,8 +18,8 @@
           localStorage[field] = $rootScope.config[field];
         });
         
-        sheetsService.authorize().then(function () {
-          $rootScope.$apply("configComplete = true;");
+        gapiService.authorize().then(function () {
+          $rootScope.configComplete = true;
         });
       }
     });
