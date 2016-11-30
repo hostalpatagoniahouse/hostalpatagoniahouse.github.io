@@ -18,7 +18,7 @@ window.entryController = (function () {
       var bookingRow = getBookingRow();
       
       if (validateBookingRow(bookingRow)) {
-        sheets.addBookingRow();
+        sheets.addBookingRow(bookingRow);
       }
     });
   }
