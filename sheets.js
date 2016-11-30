@@ -70,7 +70,7 @@
     function getColumn(date) {
       gapi.client.sheets.spreadsheets.values.get({
           spreadsheetId: $rootScope.config.roomsSheetId,
-          range: getsheetName(date) + '!A1:CC1'
+          range: getSheetName(date) + '!A1:CC1'
         }).then(function(response) {
           console.log(response);
         });
