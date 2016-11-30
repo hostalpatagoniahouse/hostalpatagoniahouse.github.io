@@ -24,33 +24,33 @@
     <md-content layout-padding>
       <form ng-controller="ConfigController" ng-hide="configComplete" ng-submit="saveConfig()">
         <div layout="row">
-          <md-input-container>
+          <md-input-container class="md-block">
             <label>Google API Client ID</label>
             <input type="text" ng-model="config.apiClientId" autofocus />
           </md-input-container>
         </div>
         
         <div layout="row">
-          <md-input-container flex>
+          <md-input-container class="md-block" flex>
             <label>Booking Sheet ID</label>
             <input type="text" ng-model="config.bookingSheetId" />
           </md-input-container>
 
-          <md-input-container>
+          <md-input-container class="md-block" flex>
             <label>Booking Sheet Name</label>
             <input type="text" ng-model="config.bookingSheet" />
           </md-input-container>
         </div>
         
         <div layout="row">
-          <md-input-container>
+          <md-input-container class="md-block" flex>
             <label>Rooms Sheet ID</label>
             <input type="text" ng-model="config.roomsSheetId" />
           </md-input-container>
         </div>
         
         <div layout="row">
-          <md-button type="submit"class="md-primary">Save Config</md-button>
+          <md-button type="submit" class="md-raised md-primary">Save Config</md-button>
         </div>
       </form>
     </md-content>
