@@ -2,7 +2,7 @@
 
 (function () {
   angular.module("app")
-    .factory("sheetsService", function (utils, $rootScope, gapiService) {
+    .factory("sheetsService", function (utils, $rootScope, gapiService, $q) {
       var sheetsService = {};
 
       sheetsService.addBookingRow = addBookingRow;
@@ -34,9 +34,36 @@
         ];
       }
     
-      /* Check available rooms for a particular date */
-      function availableRooms(date) {
-        console.log(getRooms(date));
+      /* Check available rooms for a certain number of guests, for a particular date and number of days */
+      function availableRooms(number, date, days) {
+        return $q.all({
+          rooms: getRooms(date),
+          column: getColumn(date)
+        }).then(function (data) {
+          // Each room is checked and resolved to the room object with available beds if available, or to false if not
+          var roomPromises = data.rooms.map(function (room) {
+            return checkRoomAvailability(room, data.column, number, date);
+          });
+          
+          return $q.all(roomPromises);
+        });
+      }
+    
+      /* Checks a room availability, returning a promise that is resolved with the room object with only available beds if available, or false if not */
+      function checkRoomAvailability(room, dateColumn, numberBeds, date) {
+        if (room.beds.length < numberBeds) {
+          var deferred = $q.defer();
+          deferred.resolve(false);
+          return deferred.promise;
+        }
+        
+        return gapiService.get({
+          spreadsheetId: $rootScope.config.roomsSheetId,
+           range: getSheetName(date) + "!" + dateColumn + room.startRow + ":" + dateColumn + (room.startRow + room.beds.length)',
+           majorDimension: "COLUMNS"
+        }).then(function (response) {
+          return response.result.values[0];
+        });
       }
     
       function getSheetName(date) {
@@ -46,51 +73,52 @@
        /**
          * Returns an array of room objects. Each contains: 
          *    - name: the room name
-         *    - beds: an array of bed objects, each with:
-         *      - name: the bed name
-         *      - row: the number of the row for the bed
+         *    - startRow: the row at which the room starts
+         *    - beds: an array of bed names
          */
       function getRooms(date) {
         // get the first column of the sheet for a particular month - this should contain all the room names. Room names start with "HAB"
         return gapiService.get({
-            spreadsheetId: $rootScope.config.roomsSheetId,
-            range: getSheetName(date) + '!A1:A100',
-            majorDimension: "COLUMNS"
+          spreadsheetId: $rootScope.config.roomsSheetId,
+          range: getSheetName(date) + '!A1:A100',
+          majorDimension: "COLUMNS"
           
           }).then(function(response) {
             var rooms = [];
           
-            // run through the cells, identiyfying and adding rooms
-            response.result.values[0].forEach(function (cell, index) {
+            // run through the cells, identifying and adding rooms
+            var cell, cellList = response.result.values[0];
+            for (var i = 0; i < cellList.length; i++) {
+              cell = cellList[i];
               
               // Rooms should start with "HAB" and have a - character separating the room name and the bed name
-              // process the cell only if these conditions are met
+              // process the cell only if these conditions are met. We assume that rooms are vertically continuous
               if (!(cell.substring(0, 3) === "HAB" && cell.indexOf("-") > -1)) {
-                return;
+                if (rooms.length > 0) {
+                  // Exit the loop if rooms have been found- this means were at the end
+                  break;
+                } else {
+                  // Skip the cell and continue the loop if rooms have not yet been found - these are the beginning cells to skip
+                  continue;
+                }
               }
               
               var splitCell = cell.split("-");
               var roomName = splitCell.shift().trim();
-              var bedObj = {
-                name: splitCell.join("-").trim(),
-                row: index + 1
-              };
+              var bedName = splitCell.join("-").trim();
               
-              var existingRoom = rooms.find(function (room) { 
-                return room.name === roomName
-              });
-              
-              // If the room has already been added
-              if (existingRoom) {
-                existingRoom.beds.push(bedObj);
+              // If this belongs to the previous room
+              if (rooms[rooms.length - 1].name = roomName) {
+                rooms[rooms.length - 1].beds.push(bedName);
               } else {
                 // Otherwise add a new room object
                 rooms.push({
                   name: roomName,
-                  beds: [bedObj]
+                  startRow: index + 1,
+                  beds: [bedName]
                 });
               } 
-            });
+            }
            
             console.log(rooms);
             return rooms;
