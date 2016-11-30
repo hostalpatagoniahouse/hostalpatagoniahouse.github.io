@@ -19,7 +19,7 @@
         });
         
         sheetsService.authorize().then(function () {
-          $rootScope.configComplete = true;
+          $rootScope.$apply("configComplete = true;");
         });
       }
     });
