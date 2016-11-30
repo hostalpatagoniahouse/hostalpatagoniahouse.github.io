@@ -6,6 +6,7 @@
     <title>Patagonia House - Add Guest</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.css" />
+    <link rel="stylesheet" type="text/css" href="/styles.css" />
     
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-animate.min.js"></script>
@@ -21,7 +22,7 @@
   </head>
   
   <body>
-    <md-content layout-padding ng-controller="ConfigController" ng-hide="configComplete">
+    <md-content layout-padding ng-controller="ConfigController" ng-hide="configComplete" class="base-container md-whiteframe-z1">
       <md-toolbar class="md-primary">
         <div class="md-toolbar-tools">
           <h2>Configuration</h2>
@@ -61,7 +62,7 @@
       </form>
     </md-content>
       
-    <md-content layout-padding ng-controller="EntryController" ng-show="configComplete">
+    <md-content layout-padding ng-controller="EntryController" ng-show="configComplete" class="base-container md-whiteframe-z1">
       <md-toolbar class="md-primary">
         <div class="md-toolbar-tools">
           <h2>Add booking</h2>
