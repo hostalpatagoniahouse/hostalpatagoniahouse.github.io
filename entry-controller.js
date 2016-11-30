@@ -5,7 +5,6 @@
     .controller("EntryController", function ($scope, $rootScope, utils, sheetsService) {
       $scope.entry = {};
       $scope.entry.date = new Date();
-    console.log("hoola");
     
       $scope.addEntry = function () {
         sheetsService.addBookingRow($scope.entry);
