@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="PatagoniaHouse">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Patagonia House - Add Guest</title>
   </head>
-  <body>
-    <div id="config-section">
+  <body ng-controller="MainController">
+    <form ng-controller="ConfigController" ng-hide="configComplete" ng-submit="saveConfig()">
       <div>
         <label for="api-client-id-input">Google API Client ID</label>
-        <input type="text" id="api-client-id-input" />
+        <input type="text" id="api-client-id-input" ng-model="apiClientId" autofocus />
       </div>
       
       <div>
         <label for="booking-sheet-id-input">Booking Sheet ID</label>
-        <input type="text" id="booking-sheet-id-input" />
+        <input type="text" id="booking-sheet-id-input" ng-model="bookingSheetId" />
       </div>
       
       <div>
         <label for="booking-sheet-input">Booking Sheet Name</label>
-        <input type="text" id="booking-sheet-input" />
+        <input type="text" id="booking-sheet-input" ng-model="bookingSheet" />
       </div>
       
-      <button id="save-config-button">
+      <button type="submit">
         Save Config
       </button>
-    </div>
+    </form>
     
     <div id="entry-section" style="display: none;">
       <div>
@@ -51,6 +51,7 @@
       <button id="add-button">Add</button>
     </div>
     
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src="https://apis.google.com/js/client.js"></script>
     <script src="/config.js"></script>
     <script src="/utils.js"></script>
