@@ -59,7 +59,7 @@
         
         return gapiService.get({
           spreadsheetId: $rootScope.config.roomsSheetId,
-           range: getSheetName(date) + "!" + dateColumn + room.startRow + ":" + dateColumn + (room.startRow + room.beds.length)',
+           range: getSheetName(date) + "!" + dateColumn + room.startRow + ":" + dateColumn + (room.startRow + room.beds.length),
            majorDimension: "COLUMNS"
         }).then(function (response) {
           return response.result.values[0];
