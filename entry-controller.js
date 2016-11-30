@@ -11,9 +11,8 @@
       };
     
       $scope.checkRooms = function () {
-        console.log(entry.date);
-        sheetsService.availableRooms(entry.date);
+        console.log($scope.entry.date);
+        sheetsService.availableRooms($scope.entry.date);
       }
-      $scope.checkRooooms = $scope.checkRooms;
     });
 })();
