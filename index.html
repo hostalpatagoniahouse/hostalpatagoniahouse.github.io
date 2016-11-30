@@ -21,14 +21,14 @@
   </head>
   
   <body>
-    <md-content layout-padding>
+    <md-content layout-padding ng-controller="ConfigController" ng-hide="configComplete">
       <md-toolbar class="md-primary">
         <div class="md-toolbar-tools">
           <h2>Configuration</h2>
         </div>
       </md-toolbar>
       
-      <form ng-controller="ConfigController" ng-hide="configComplete" ng-submit="saveConfig()">
+      <form ng-submit="saveConfig()">
         <div layout="row">
           <md-input-container flex>
             <label>Google API Client ID</label>
@@ -61,14 +61,14 @@
       </form>
     </md-content>
       
-    <md-content layout-padding>
+    <md-content layout-padding ng-controller="EntryController" ng-show="configComplete">
       <md-toolbar class="md-primary">
         <div class="md-toolbar-tools">
           <h2>Add booking</h2>
         </div>
       </md-toolbar>
       
-      <form ng-controller="EntryController" ng-show="configComplete" ng-submit="addEntry()">
+      <form ng-submit="addEntry()">
         <div layout="row">
           <md-input-container flex>
             <label>Name</label>
