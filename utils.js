@@ -21,7 +21,7 @@
 
       /* To convert a javascript timestamp to a google sheets epoch date */
       function toSheetsDate(d) {
-        return (d - epoch) / msPerDay;
+        return Math.floor((d - epoch) / msPerDay);
       }
 
       /* And the opposite */
