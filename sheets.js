@@ -114,7 +114,7 @@
                 // Otherwise add a new room object
                 rooms.push({
                   name: roomName,
-                  startRow: index + 1,
+                  startRow: i + 1,
                   beds: [bedName]
                 });
               } 
