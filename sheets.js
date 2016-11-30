@@ -58,32 +58,28 @@
       function getSheetName(date) {
         return (utils.getMonthName(date) + utils.getShortYear(date));
       }
-  
+      
+      /* Get the column number within the sheet to look at for a particular date */
       function getColumn(date) {
-        
         // get the first row of the sheet for a particular month - this should contain all the dates in that month
         gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: $rootScope.config.roomsSheetId,
             range: getSheetName(date) + '!A1:CC1',
             valueRenderOption: "UNFORMATTED_VALUE"
+          
           }).then(function(response) {
-            var dateRow = response.result.values[0];
-            
             // convert our date to the sheets format
             var formattedDate = utils.toSheetsDate(date);
           
             // check the row of dates for this date
-            console.log(formattedDate, dateRow);
-            var index = dateRow.indexOf(formattedDate);
+            var index = response.result.values[0].indexOf(formattedDate);
             if (index === -1) {
-              // date not found
-              console.log("not found");
+              // if the date could not be found
               return false;
             }
             
             // return the column letter found
             var column = utils.getColumnLetter(index);
-            console.log(column);
             return column;
           });
       }
