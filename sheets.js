@@ -73,7 +73,18 @@
             var formattedDate = utils.toSheetsDate(date);
           
             // check the row of dates for this date
-            console.log(formattedDate);
+            console.log(formattedDate, dateRow);
+            var index = dateRow.indexOf(formattedDate);
+            if (index === -1) {
+              // date not found
+              console.log("not found");
+              return false;
+            }
+            
+            // return the column letter found
+            var column = utils.getColumnLetter(index);
+            console.log(column);
+            return column;
           });
       }
     });
