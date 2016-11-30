@@ -98,6 +98,15 @@
               <md-button type="button" ng-click="checkRooms()">Check rooms</md-button>
             </md-input-container>
           </div>
+          
+          <div layout="row">
+            <md-input-container flex>
+              <label>Room</label>
+              <md-select ng-model="entry.room" ng-disabled="roomList.length < 1">
+                <md-option ng-repeat="rooms in roomList" ng-value="room.name">{{ room.name }}</md-option>
+              </md-select>
+            </md-input-container>
+          </div>
 
           <div layout="row">
             <md-button type="submit" class="md-raised md-primary">Add</md-button>
