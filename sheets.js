@@ -60,12 +60,20 @@
       }
   
       function getColumn(date) {
+        
+        // get the first row of the sheet for a particular month - this should contain all the dates in that month
         gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: $rootScope.config.roomsSheetId,
             range: getSheetName(date) + '!A1:CC1',
             valueRenderOption: "UNFORMATTED_VALUE"
           }).then(function(response) {
-            console.log(response);
+            var dateRow = response.result.values[0];
+            
+            // convert our date to the sheets format
+            var formattedDate = utils.toSheetsDate(date);
+          
+            // check the row of dates for this date
+            console.log(formattedDate);
           });
       }
     });
