@@ -22,72 +22,74 @@
   </head>
   
   <body>
-    <md-content layout-padding ng-controller="ConfigController" ng-hide="configComplete" class="base-container md-whiteframe-z1">
-      <md-toolbar class="md-primary">
-        <div class="md-toolbar-tools">
-          <h2>Configuration</h2>
-        </div>
-      </md-toolbar>
-      
-      <form ng-submit="saveConfig()">
-        <div layout="row">
-          <md-input-container flex>
-            <label>Google API Client ID</label>
-            <input type="text" ng-model="config.apiClientId" autofocus />
-          </md-input-container>
-        </div>
-        
-        <div layout="row">
-          <md-input-container class="md-block" flex>
-            <label>Booking Sheet ID</label>
-            <input type="text" ng-model="config.bookingSheetId" />
-          </md-input-container>
+    <div layout-padding>
+      <md-content ng-controller="ConfigController" ng-hide="configComplete" class="base-container md-whiteframe-z1">
+        <md-toolbar class="md-primary">
+          <div class="md-toolbar-tools">
+            <h2>Configuration</h2>
+          </div>
+        </md-toolbar>
 
-          <md-input-container class="md-block" flex>
-            <label>Booking Sheet Name</label>
-            <input type="text" ng-model="config.bookingSheet" />
-          </md-input-container>
-        </div>
-        
-        <div layout="row">
-          <md-input-container class="md-block" flex>
-            <label>Rooms Sheet ID</label>
-            <input type="text" ng-model="config.roomsSheetId" />
-          </md-input-container>
-        </div>
-        
-        <div layout="row">
-          <md-button type="submit" class="md-raised md-primary">Continue</md-button>
-        </div>
-      </form>
-    </md-content>
-      
-    <md-content layout-padding ng-controller="EntryController" ng-show="configComplete" class="base-container md-whiteframe-z1">
-      <md-toolbar class="md-primary">
-        <div class="md-toolbar-tools">
-          <h2>Add booking</h2>
-        </div>
-      </md-toolbar>
-      
-      <form ng-submit="addEntry()">
-        <div layout="row">
-          <md-input-container flex>
-            <label>Name</label>
-            <input type="text" ng-model="entry.Name" autofocus />
-          </md-input-container>
-          
-          <md-input-container flex>
-            <label>Date of Arrival</label>
-            <md-datepicker ng-model="entnry.date"></md-datepicker>
-            
-            <md-button type="button" ng-click="checkRooms()">Check rooms</md-button>
-          </md-input-container>
-        </div>
-        
-        <div layout="row">
-          <md-button type="submit" class="md-raised md-primary">Add</md-button>
-        </div>
-      </form>
-    </md-content>
+        <form ng-submit="saveConfig()">
+          <div layout="row">
+            <md-input-container flex>
+              <label>Google API Client ID</label>
+              <input type="text" ng-model="config.apiClientId" autofocus />
+            </md-input-container>
+          </div>
+
+          <div layout="row">
+            <md-input-container class="md-block" flex>
+              <label>Booking Sheet ID</label>
+              <input type="text" ng-model="config.bookingSheetId" />
+            </md-input-container>
+
+            <md-input-container class="md-block" flex>
+              <label>Booking Sheet Name</label>
+              <input type="text" ng-model="config.bookingSheet" />
+            </md-input-container>
+          </div>
+
+          <div layout="row">
+            <md-input-container class="md-block" flex>
+              <label>Rooms Sheet ID</label>
+              <input type="text" ng-model="config.roomsSheetId" />
+            </md-input-container>
+          </div>
+
+          <div layout="row">
+            <md-button type="submit" class="md-raised md-primary">Continue</md-button>
+          </div>
+        </form>
+      </md-content>
+
+      <md-content layout-padding ng-controller="EntryController" ng-show="configComplete" class="base-container md-whiteframe-z1">
+        <md-toolbar class="md-primary">
+          <div class="md-toolbar-tools">
+            <h2>Add booking</h2>
+          </div>
+        </md-toolbar>
+
+        <form ng-submit="addEntry()">
+          <div layout="row">
+            <md-input-container flex>
+              <label>Name</label>
+              <input type="text" ng-model="entry.Name" autofocus />
+            </md-input-container>
+
+            <md-input-container flex>
+              <label>Date of Arrival</label>
+              <md-datepicker ng-model="entnry.date"></md-datepicker>
+
+              <md-button type="button" ng-click="checkRooms()">Check rooms</md-button>
+            </md-input-container>
+          </div>
+
+          <div layout="row">
+            <md-button type="submit" class="md-raised md-primary">Add</md-button>
+          </div>
+        </form>
+      </md-content>
+    </div>
   </body>
 </html>
