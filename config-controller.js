@@ -24,7 +24,11 @@ window.configController = (function () {
     saveConfigButton.addEventListener('click', function (event) {
       event.preventDefault();
       saveConfig();
-      var result = sheets.authorize();
+      var result = sheets.authorize().then(function (a) {
+        console.log('outer success', a);
+      }, function (a) {
+        console.log('outer error', a);
+      });
       console.log(result);
     });
   }
