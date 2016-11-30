@@ -14,5 +14,6 @@
         console.log(entry.date);
         sheetsService.availableRooms(entry.date);
       }
+      $scope.checkRooooms = $scope.checkRooms;
     });
 })();
