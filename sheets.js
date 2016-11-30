@@ -2,41 +2,25 @@
 
 (function () {
   angular.module("app")
-    .factory("sheetsService", function (utils, $rootScope, SCOPES, SHEETS_API_DISCOVERY_URL) {
+    .factory("sheetsService", function (utils, $rootScope, gapiService) {
       var sheetsService = {};
 
-      sheetsService.authorize = authorize;
       sheetsService.addBookingRow = addBookingRow;
       sheetsService.availableRooms = availableRooms;
 
       return sheetsService;
 
       /////////////////////////////////////////////
-
-      /* Authorize the sheets API */
-      function authorize() {
-        return gapi.auth.authorize(
-          { client_id: $rootScope.config.apiClientId, scope: SCOPES, immediate: false }
-        ).then(loadSheetsApi);
-      }
-
-      /* Load the sheets client library. Returns a promise */
-      function loadSheetsApi() {
-        return gapi.client.load(SHEETS_API_DISCOVERY_URL);
-      }
-
+    
       /* Add a booking row with the data passed */
       function addBookingRow(data) {
-        gapi.client.sheets.spreadsheets.values.append({
+        gapiService.append({
           spreadsheetId: $rootScope.config.bookingSheetId,
           range: $rootScope.config.bookingSheet + '!A1:D1',
           values: [convertToBookingRow(data)]
 
         }).then(function(response) {
           console.log(response);
-
-        }, function(response) {
-          utils.error(response.result.error.message);
 
         });
       }
@@ -68,7 +52,7 @@
          */
       function getRooms(date) {
         // get the first column of the sheet for a particular month - this should contain all the room names. Room names start with "HAB"
-        gapi.client.sheets.spreadsheets.values.get({
+        return gapiService.get({
             spreadsheetId: $rootScope.config.roomsSheetId,
             range: getSheetName(date) + '!A1:A100',
             majorDimension: "COLUMNS"
@@ -116,7 +100,7 @@
       /* Get the column number within the sheet to look at for a particular date */
       function getColumn(date) {
         // get the first row of the sheet for a particular month - this should contain all the dates in that month
-        gapi.client.sheets.spreadsheets.values.get({
+        return gapiService.get({
             spreadsheetId: $rootScope.config.roomsSheetId,
             range: getSheetName(date) + '!A1:CC1',
             valueRenderOption: "UNFORMATTED_VALUE"
