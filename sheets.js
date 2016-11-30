@@ -108,6 +108,7 @@
               } 
             });
            
+            console.log(rooms);
             return rooms;
           });
       }
