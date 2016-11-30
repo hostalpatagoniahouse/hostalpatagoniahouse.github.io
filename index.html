@@ -21,7 +21,13 @@
   </head>
   
   <body>
-    <md-content layout-padding>
+    <md-content layout-padding md-whiteframe="1">
+      <md-toolbar class="md-primary">
+        <div class="md-toolbar-tools">
+          <h2>Configuration</h2>
+        </div>
+      </md-toolbar>
+      
       <form ng-controller="ConfigController" ng-hide="configComplete" ng-submit="saveConfig()">
         <div layout="row">
           <md-input-container class="md-block">
@@ -50,7 +56,7 @@
         </div>
         
         <div layout="row">
-          <md-button type="submit" class="md-raised md-primary">Save Config</md-button>
+          <md-button type="submit" class="md-raised md-primary">Continue</md-button>
         </div>
       </form>
     </md-content>
