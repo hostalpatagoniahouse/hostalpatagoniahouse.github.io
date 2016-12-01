@@ -36,13 +36,10 @@
     
       /* Check available rooms for a certain number of guests, for a particular date and number of days */
       function availableRooms(number, date, days) {
-        return $q.all({
-          rooms: getRooms(date),
-          column: getColumn(date)
-        }).then(function (data) {
+        return getRooms(date)).then(function (rooms) {
           // Each room is checked and resolved to the room object with available beds if available, or to false if not
-          var roomPromises = data.rooms.map(function (room) {
-            return checkRoomAvailability(room, data.column, number, date);
+          var roomPromises = rooms.map(function (room) {
+            return checkRoomAvailability(room, number, date, days);
           });
           
           return $q.all(roomPromises);
@@ -50,35 +47,39 @@
       }
     
       /* Checks a room availability, returning a promise that is resolved with the room object if available, or false if not */
-      function checkRoomAvailability(room, dateColumn, numberBeds, date) {
+      function checkRoomAvailability(room, numberBeds, date, days) {
         if (room.beds.length < numberBeds) {
           var deferred = $q.defer();
           deferred.resolve(false);
           return deferred.promise;
         }
         
-        return gapiService.get({
-          spreadsheetId: $rootScope.config.roomsSheetId,
-           range: getSheetName(date) + "!" + dateColumn + room.startRow + ":" + dateColumn + (room.startRow + room.beds.length),
-           majorDimension: "COLUMNS"
-        }).then(function (response) {
-          // If there are no values, all cells are empty and the room is totally available}
-          if (!response.result.values) {
-            return room;
-          }
-          
-          // Check the number of empty cells
-          var availableBeds = response.result.values[0].filter(function (x) { return !x; }).length;
-          
-          // Add the trailing cells that were not returned because they were empty
-          availableBeds += room.beds.length - response.result.values[0].length;
-          
-          // Check if we have enough beds available
-          if (availableBeds >= numberBeds) {
-            return room;
-          } else {
-            return false
-          }
+        return getDateRanges(date, days, room.startRow, room.startRow + room.beds.length).then(function (dateRanges) {
+          gapiService.batchGet({
+            spreadsheetId: $rootScope.config.roomsSheetId,
+             ranges: dateRanges,
+             majorDimension: "COLUMNS"
+          }).then(function (response) {
+            console.log(response.result);
+            return;
+            // If there are no values, all cells are empty and the room is totally available}
+            if (!response.result.values) {
+              return room;
+            }
+
+            // Check the number of empty cells
+            var availableBeds = response.result.values[0].filter(function (x) { return !x; }).length;
+
+            // Add the trailing cells that were not returned because they were empty
+            availableBeds += room.beds.length - response.result.values[0].length;
+
+            // Check if we have enough beds available
+            if (availableBeds >= numberBeds) {
+              return room;
+            } else {
+              return false
+            }
+          });
         });
       }
     
@@ -163,6 +164,25 @@
             var column = utils.getColumnLetter(index);
             return column;
           });
+      }
+    
+    function getDateRange(date, start, end) {
+      return getColumn(date).then(function (dateColumn) {
+        return getSheetName(date) + "!" + dateColumn + start + ":" + dateColumn + end;
+      });
+    }
+      
+      function getDateRanges(date, days, start, end) {
+        var datesArray = [], date;
+        for (var i = 0; i < days; i++) {
+          date = new Date(date);
+          date.setDate(date.getDate() + i);
+          datesArray.push(date);
+        }
+        
+        return $q.all(datesArray.map(function (date) {
+          getDateRange(date, start, end)
+        }));
       }
     });
 })();
