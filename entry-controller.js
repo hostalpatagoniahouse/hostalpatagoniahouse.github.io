@@ -16,6 +16,8 @@
           $scope.roomList = response.filter(function (x) { return x; });
           if ($scope.roomList.length > 0) {
             $scope.entry.room = $scope.roomList[0];
+          } else {
+            $scope.entry.room = null;
           }
           console.log("Loaded rooms!");
         });
