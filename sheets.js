@@ -77,9 +77,12 @@
     
       /* Check available rooms for a certain number of guests, for a particular date and number of days */
       function availableRooms(number, date, days) {
-        return getRooms(date).then(function (rooms) {
+        return $q.all({
+          rooms: getRooms(date),
+          dateColumn: getFullColumn (date) // Prime the date cache with the starting date
+        }).then(function (data) {
           // Each room is checked and resolved to the room object with available beds if available, or to false if not
-          var roomPromises = rooms.map(function (room) {
+          var roomPromises = data.rooms.map(function (room) {
             return checkRoomAvailability(room, number, date, days);
           });
           
