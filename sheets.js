@@ -47,14 +47,14 @@
             var cellData = dateRanges.map(function (dateRange) {
               return {
                 range: dateRange,
+                majorDimension: "COLUMNS",
                 values: [new Array(room.beds.length).map(function () { return data.name; })]
               };
             });
 
             return gapiService.batchUpdate({
               spreadsheetId: $rootScope.config.roomsSheetId,
-              data: cellData,
-              majorDimension: "COLUMNS"
+              data: cellData
             });
           })
         });
