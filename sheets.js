@@ -36,28 +36,29 @@
         ];
       }
     
-    /* Update the rooms for an entry */
-    function addRoomEntry(data) {
-      return checkRoomAvailability(data.room, data.number, data.date, data.days).then(function (room) {
-        if (!room) {
-          return false
-        }
-        
-        return getDateRanges(data.date, data.days, room.startRow, room.startRow + room.beds.length).then(function (dateRanges) {
-          var cellData = dateRanges.map(function (dateRange) {
-            return {
-              range: dateRange,
-              values: []
-            }
-          });
-          
-          return gapiService.batchUpdate({
-            spreadsheetId: $rootScope.config.roomsSheetId,
-            data: cellData
-          });
-        })
-      });
-    }
+      /* Update the rooms for an entry */
+      function addRoomEntry(data) {
+        return checkRoomAvailability(data.room, data.number, data.date, data.days).then(function (room) {
+          if (!room) {
+            return false
+          }
+
+          return getDateRanges(data.date, data.days, room.startRow, room.startRow + room.beds.length).then(function (dateRanges) {
+            var cellData = dateRanges.map(function (dateRange) {
+              return {
+                range: dateRange,
+                values: [new Array(room.beds.length).map(function () { return data.name; })]
+              };
+            });
+
+            return gapiService.batchUpdate({
+              spreadsheetId: $rootScope.config.roomsSheetId,
+              data: cellData,
+              majorDimension: "COLUMNS"
+            });
+          })
+        });
+      }
     
       /* Check available rooms for a certain number of guests, for a particular date and number of days */
       function availableRooms(number, date, days) {
