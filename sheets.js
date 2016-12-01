@@ -36,7 +36,7 @@
     
       /* Check available rooms for a certain number of guests, for a particular date and number of days */
       function availableRooms(number, date, days) {
-        return getRooms(date)).then(function (rooms) {
+        return getRooms(date).then(function (rooms) {
           // Each room is checked and resolved to the room object with available beds if available, or to false if not
           var roomPromises = rooms.map(function (room) {
             return checkRoomAvailability(room, number, date, days);
