@@ -39,7 +39,6 @@
     
       /* Update the rooms for an entry */
       function addRoomEntry(data) {
-        console.log(data);
         return checkRoomAvailability(data.room, data.number, data.date, data.days).then(function (room) {
           if (!room) {
             return false
@@ -47,10 +46,14 @@
 
           return getDateRanges(data.date, data.days, room.startRow, room.startRow + room.beds.length).then(function (dateRanges) {
             var cellData = dateRanges.map(function (dateRange) {
+              var cellValues = new Array(room.beds.length);
+              cellValues =  cellValues.map(function () { return data.name; });
+              console.log(cellValues, data);
+              
               return {
                 range: dateRange,
                 majorDimension: "COLUMNS",
-                values: [new Array(room.beds.length).map(function () { return data.name; })]
+                values: [cellValues]
               };
             });
 
