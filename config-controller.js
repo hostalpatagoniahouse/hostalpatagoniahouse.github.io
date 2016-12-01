@@ -3,20 +3,12 @@
 (function () {
   angular.module("app")
     .controller("ConfigController", function ($scope, $rootScope, gapiService) {
-      var configInputs = ["apiClientId", "bookingSheetId", "bookingSheet", "roomsSheetId"];
-    
-      $rootScope.config = {};
-      
-      configInputs.forEach(function (field) {
-        if (localStorage[field]) {
-          $rootScope.config[field] = localStorage[field]
-        }
-      });
+      $rootScope.config = localStorage.config || {};
     
       $scope.saveConfig = function () {
-        configInputs.forEach(function (field) {
-          localStorage[field] = $rootScope.config[field];
-        });
+        if ($rootScope.config.remember) {
+          localStorage.config = $rootScope.config;
+        }
         
         gapiService.authorize().then(function () {
           $rootScope.configComplete = true;
