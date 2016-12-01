@@ -60,7 +60,7 @@
           </div>
           
           <div layout="row">
-            <md-checkbox class="md-primary" ng-model="config.remember">Remember config data on this browser</md-checkbox>
+            <md-checkbox ng-model="config.remember">Remember config data on this browser</md-checkbox>
           </div>
 
           <div layout="row">
@@ -107,7 +107,7 @@
             <md-input-container flex>
               <label>Room</label>
               <md-select ng-model="entry.room" ng-disabled="roomList.length < 1">
-                <md-option ng-repeat="room in roomList" ng-value="room">{{ room.name }} (#{{ room.beds.length }})</md-option>
+                <md-option ng-repeat="room in roomList" ng-value="room">{{ room.name }} (#{{ room.beds.length }}) - {{ rooms.bedsAvailable }} available</md-option>
               </md-select>
             </md-input-container>
           </div>
