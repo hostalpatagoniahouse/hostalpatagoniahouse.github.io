@@ -13,9 +13,10 @@
       $scope.checkRooms = function () {
         sheetsService.availableRooms($scope.entry.number, $scope.entry.date, $scope.entry.days).then(function (response) {
           $scope.roomList = response.filter(function (x) { return x; });
-          if ($scope.roomList.length > 1) {
+          if ($scope.roomList.length > 0) {
             $scope.entry.room = $scope.roomList[0];
           }
+          console.log("Loaded rooms!");
         });
       }
     });
