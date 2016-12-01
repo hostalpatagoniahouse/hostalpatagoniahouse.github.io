@@ -3,6 +3,7 @@
 (function () {
   angular.module("app")
     .controller("EntryController", function ($scope, $rootScope, utils, sheetsService) {
+      $scope.roomList = [];
       $scope.entry = {};
       $scope.entry.date = new Date();
     
