@@ -9,6 +9,7 @@
     
       $scope.addEntry = function () {
         sheetsService.addBookingRow($scope.entry);
+        sheetsService.addRoomEntry($scope.entry);
       };
     
       $scope.checkRooms = function () {
