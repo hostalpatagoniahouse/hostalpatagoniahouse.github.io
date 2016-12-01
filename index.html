@@ -103,7 +103,7 @@
             <md-input-container flex>
               <label>Room</label>
               <md-select ng-model="entry.room" ng-disabled="roomList.length < 1">
-                <md-option ng-repeat="room in roomList" ng-value="room">{{ room.name }}</md-option>
+                <md-option ng-repeat="room in roomList" ng-value="room">{{ room.name }} (#{{ room.beds.length }})</md-option>
               </md-select>
             </md-input-container>
           </div>
