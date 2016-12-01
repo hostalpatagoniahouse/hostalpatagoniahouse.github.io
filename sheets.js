@@ -168,7 +168,6 @@
     
     function getDateRange(date, start, end) {
       return getColumn(date).then(function (dateColumn) {
-        console.log(getSheetName(date) + "!" + dateColumn + start + ":" + dateColumn + end);
         return getSheetName(date) + "!" + dateColumn + start + ":" + dateColumn + end;
       });
     }
@@ -182,7 +181,7 @@
         }
         
         return $q.all(datesArray.map(function (date) {
-          getDateRange(date, start, end)
+          return getDateRange(date, start, end)
         }));
       }
     });
