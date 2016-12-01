@@ -62,7 +62,7 @@
           }).then(function (response) {
             var availableBeds = 0;
             
-            for (var i = 0; i < room.beds.length, i++) {
+            for (var i = 0; i < room.beds.length; i++) {
               var bedAvailable = true;
               // Check the bed across the ranges for each date
               response.result.valueRanges.forEach(function (valueRange) {
