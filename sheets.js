@@ -176,15 +176,12 @@
     }
       
       function getDateRanges(date, days, start, end) {
-        var datesArray = [], date;
+        var datesArray = [], tmpDate;
         for (var i = 0; i < days; i++) {
-          console.log(date, i);
-          date = new Date(date);
-          date.setDate(date.getDate() + i);
-          datesArray.push(date);
+          tmpDate = new Date(date);
+          tmpDate.setDate(tmpDate.getDate() + i);
+          datesArray.push(tmpDate);
         }
-        
-        console.log(datesArray);
         
         return $q.all(datesArray.map(function (date) {
           return getDateRange(date, start, end)
