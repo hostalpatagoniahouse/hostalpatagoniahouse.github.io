@@ -12,7 +12,7 @@
     
       $scope.checkRooms = function () {
         sheetsService.availableRooms($scope.entry.number, $scope.entry.date, $scope.entry.days).then(function (response) {
-          console.log(response);
+          $scope.roomList = response.filter(function (x) { return x; });
         });
       }
     });
