@@ -46,9 +46,14 @@
 
           return getDateRanges(data.date, data.days, room.startRow, room.startRow + room.beds.length).then(function (dateRanges) {
             var cellData = dateRanges.map(function (dateRange) {
-              var cellValues = [];
+              var cellValues = [], bedsUsed = 0;
               for(var i = 0; i < room.beds.length; i++) {
-                cellValues.push(data.name);
+                cellValues.push(null);
+              }
+              
+              // Set the beds that are available for writing
+              for(var i = 0; i < data.number; i++) {
+                cellValues[room.availableBeds[i]] = data.name;
               }
               
               return {
