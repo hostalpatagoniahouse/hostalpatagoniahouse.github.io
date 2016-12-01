@@ -60,18 +60,21 @@
              ranges: dateRanges,
              majorDimension: "COLUMNS"
           }).then(function (response) {
-            console.log(response.result);
-            return;
-            // If there are no values, all cells are empty and the room is totally available}
-            if (!response.result.values) {
-              return room;
+            var availableBeds = 0;
+            
+            for (var i = 0; i < room.beds.length, i++) {
+              var bedAvailable = true;
+              // Check the bed across the ranges for each date
+              response.result.valueRanges.forEach(function (valueRange) {
+                if (valueRange.values && valueRange.values[0][i]) {
+                  bedAvailable = false;
+                }
+              });
+              
+              if (bedAvailable) {
+                availableBeds ++;
+              }
             }
-
-            // Check the number of empty cells
-            var availableBeds = response.result.values[0].filter(function (x) { return !x; }).length;
-
-            // Add the trailing cells that were not returned because they were empty
-            availableBeds += room.beds.length - response.result.values[0].length;
 
             // Check if we have enough beds available
             if (availableBeds >= numberBeds) {
