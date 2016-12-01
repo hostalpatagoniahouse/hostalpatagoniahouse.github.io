@@ -6,6 +6,7 @@
       var sheetsService = {};
 
       sheetsService.addBookingRow = addBookingRow;
+      sheetsService.addRoomEntry = addRoomEntry;
       sheetsService.availableRooms = availableRooms;
 
       return sheetsService;
@@ -14,6 +15,7 @@
     
       /* Add a booking row with the data passed */
       function addBookingRow(data) {
+        return;
         gapiService.append({
           spreadsheetId: $rootScope.config.bookingSheetId,
           range: $rootScope.config.bookingSheet + '!A1:D1',
@@ -34,6 +36,29 @@
         ];
       }
     
+    /* Update the rooms for an entry */
+    function addRoomEntry(data) {
+      return checkRoomAvailability(data.room, data.number, data.date, data.days).then(function (room) {
+        if (!room) {
+          return false
+        }
+        
+        return getDateRanges(data.date, data.days, room.startRow, room.startRow + room.beds.length).then(function (dateRanges) {
+          var cellData = dateRanges.map(function (dateRange) {
+            return {
+              range: dateRange,
+              values: []
+            }
+          });
+          
+          return gapiService.batchUpdate({
+            spreadsheetId: $rootScope.config.roomsSheetId,
+            data: cellData
+          });
+        })
+      });
+    }
+    
       /* Check available rooms for a certain number of guests, for a particular date and number of days */
       function availableRooms(number, date, days) {
         return getRooms(date).then(function (rooms) {
@@ -46,7 +71,7 @@
         });
       }
     
-      /* Checks a room availability, returning a promise that is resolved with the room object if available, or false if not */
+      /* Checks a room availability, returning a promise that is resolved with the room object if available, or false if not. The room object is updated with the indices of the available beds in availableBeds */
       function checkRoomAvailability(room, numberBeds, date, days) {
         if (room.beds.length < numberBeds) {
           var deferred = $q.defer();
@@ -60,7 +85,7 @@
              ranges: dateRanges,
              majorDimension: "COLUMNS"
           }).then(function (response) {
-            var availableBeds = 0;
+            var availableBeds = [];
             
             for (var i = 0; i < room.beds.length; i++) {
               var bedAvailable = true;
@@ -72,12 +97,12 @@
               });
               
               if (bedAvailable) {
-                availableBeds++;
+                availableBeds.push(i);
               }
             }
 
             // Check if we have enough beds available
-            if (availableBeds >= numberBeds) {
+            if (availableBeds.length >= numberBeds) {
               return room;
             } else {
               return false
