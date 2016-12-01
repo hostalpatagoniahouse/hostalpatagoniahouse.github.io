@@ -55,24 +55,26 @@
         }
         
         return getDateRanges(date, days, room.startRow, room.startRow + room.beds.length).then(function (dateRanges) {
-          gapiService.batchGet({
+          return gapiService.batchGet({
             spreadsheetId: $rootScope.config.roomsSheetId,
              ranges: dateRanges,
              majorDimension: "COLUMNS"
           }).then(function (response) {
             var availableBeds = 0;
-            
+            console.log(response.result.valueRanges);
             for (var i = 0; i < room.beds.length; i++) {
               var bedAvailable = true;
               // Check the bed across the ranges for each date
               response.result.valueRanges.forEach(function (valueRange) {
+                console.log(valueRange.values, i);
                 if (valueRange.values && valueRange.values[0][i]) {
+                  console.log("not available");
                   bedAvailable = false;
                 }
               });
               
               if (bedAvailable) {
-                availableBeds ++;
+                availableBeds++;
               }
             }
 
