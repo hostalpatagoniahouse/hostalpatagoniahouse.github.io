@@ -8,35 +8,44 @@
       var dateCache = {};
       var roomCache = {};
 
-      sheetsService.addBookingRow = addBookingRow;
-      sheetsService.addRoomEntry = addRoomEntry;
+      sheetsService.addBooking = addBooking;
       sheetsService.availableRooms = availableRooms;
 
       return sheetsService;
 
       /////////////////////////////////////////////
+
+      function addBooking(data) {
+        return addRoomEntry(data).then(addBookingRow);
+      }
     
       /* Add a booking row with the data passed */
       function addBookingRow(data) {
-        return;
-        gapiService.append({
+        var bookingRow = convertToBookingRow(data);
+        
+        return gapiService.append({
           valueInputOption: "RAW",
           spreadsheetId: $rootScope.config.bookingSheetId,
-          range: $rootScope.config.bookingSheet + '!A1:D1',
-          values: [convertToBookingRow(data)]
-
-        }).then(function(response) {
-          console.log(response);
-
+          range: $rootScope.config.bookingSheet + '!A1:' + utils.getColumnLetter(bookingRow.length - 1) + '1',
+          values: [bookingRow]
         });
       }
 
       function convertToBookingRow(data) {
         return [
-          data.name,
+          data.source + " " + data.name + " " + data.number + "p-" + data.days + "n-#" + data.roomType + "-" + data.arrivalHour + "h",
+          data.roomAndBeds,
+          data.country,
           utils.toSheetsDate(data.date),
+          data.number,
           data.days,
-          data.bed
+          data.roomType,
+          data.arrivalHour,
+          data.priceWithoutTax,
+          data.priceWithTax,
+          null,
+          data.cardNumber,
+          data.comments
         ];
       }
     
@@ -49,7 +58,8 @@
 
           return getDateRanges(data.date, data.days, room.startRow, room.startRow + room.beds.length).then(function (dateRanges) {
             var cellData = dateRanges.map(function (dateRange) {
-              var cellValues = [], bedsUsed = 0;
+              var cellValues = [], bedsUsed = 0, bedNames = [];
+
               for(var i = 0; i < room.beds.length; i++) {
                 cellValues.push(null);
               }
@@ -57,7 +67,11 @@
               // Set the beds that are available for writing
               for(var i = 0; i < data.number; i++) {
                 cellValues[room.availableBeds[i]] = data.name;
+                bedNames.push(room.beds[room.availableBeds[i]]);
               }
+
+              // Include a string with the names of the room and all beds in the data passed on
+              data.roomAndBeds = room.name + " - " + bedNames.join(",");
               
               return {
                 range: dateRange,
@@ -70,6 +84,8 @@
               valueInputOption: "RAW",
               spreadsheetId: $rootScope.config.roomsSheetId,
               data: cellData
+            }).then(function () {
+              return data;
             });
           })
         });

@@ -2,3 +2,7 @@
   border-radius: 4px;
   max-width: 960px;
 }
+
+.invisible {
+	visibility: hidden;
+}
