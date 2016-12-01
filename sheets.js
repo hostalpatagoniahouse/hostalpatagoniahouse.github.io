@@ -17,6 +17,7 @@
       function addBookingRow(data) {
         return;
         gapiService.append({
+          valueInputOption: "RAW",
           spreadsheetId: $rootScope.config.bookingSheetId,
           range: $rootScope.config.bookingSheet + '!A1:D1',
           values: [convertToBookingRow(data)]
@@ -53,6 +54,7 @@
             });
 
             return gapiService.batchUpdate({
+              valueInputOption: "RAW",
               spreadsheetId: $rootScope.config.roomsSheetId,
               data: cellData
             });
