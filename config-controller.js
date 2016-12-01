@@ -3,7 +3,10 @@
 (function () {
   angular.module("app")
     .controller("ConfigController", function ($scope, $rootScope, gapiService) {
-      $rootScope.config = JSON.parse(localStorage.config) || {};
+      $rootScope.config = {};
+      if (localStorage.config) {
+        $rootScope.config = JSON.parse(localStorage.config);
+      }
     
       $scope.saveConfig = function () {
         if ($rootScope.config.remember) {
