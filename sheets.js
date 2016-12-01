@@ -4,6 +4,9 @@
   angular.module("app")
     .factory("sheetsService", function (utils, $rootScope, gapiService, $q) {
       var sheetsService = {};
+    
+      var dateCache = {};
+      var roomCache = {};
 
       sheetsService.addBookingRow = addBookingRow;
       sheetsService.addRoomEntry = addRoomEntry;
@@ -135,6 +138,13 @@
          *    - beds: an array of bed names
          */
       function getRooms(date) {
+        // Check the cache
+        if (roomCache[getSheetName(date)]) {
+          var deferred = $q.defer();
+          deferred.resolve(roomCache[getSheetName(date)]);
+          return deferred.promise;
+        }
+        
         // get the first column of the sheet for a particular month - this should contain all the room names. Room names start with "HAB"
         return gapiService.get({
           spreadsheetId: $rootScope.config.roomsSheetId,
@@ -177,13 +187,39 @@
                 });
               } 
             }
-           
+            
+            roomCache[getSheetName(date)] = rooms;
             return rooms;
           });
       }
       
       /* Get the column number within the sheet to look at for a particular date */
       function getColumn(date) {
+        return getFullColumn(date).then(function (fullColumn) {
+          // convert our date to the sheets format
+          var formattedDate = utils.toSheetsDate(date);
+
+          // check the row of dates for this date
+          var index = fullColumn.indexOf(formattedDate);
+          if (index === -1) {
+            // if the date could not be found
+            return false;
+          }
+
+          // return the column letter found
+          var column = utils.getColumnLetter(index);
+          return column;
+        })
+      }
+    
+      function getFullColumn(date) {
+        // Check the cache
+        if (dateCache[getSheetName(date)]) {
+          var deferred = $q.defer();
+          deferred.resolve(dateCache[getSheetName(date)]);
+          return deferred.promise;
+        }
+        
         // get the first row of the sheet for a particular month - this should contain all the dates in that month
         return gapiService.get({
             spreadsheetId: $rootScope.config.roomsSheetId,
@@ -191,27 +227,17 @@
             valueRenderOption: "UNFORMATTED_VALUE"
           
           }).then(function(response) {
-            // convert our date to the sheets format
-            var formattedDate = utils.toSheetsDate(date);
-          
-            // check the row of dates for this date
-            var index = response.result.values[0].indexOf(formattedDate);
-            if (index === -1) {
-              // if the date could not be found
-              return false;
-            }
-            
-            // return the column letter found
-            var column = utils.getColumnLetter(index);
-            return column;
+            dateCache[getSheetName(date)] = response.result.values[0];
+            // te quiero
+            return dateCache[getSheetName(date)];
           });
       }
     
-    function getDateRange(date, start, end) {
-      return getColumn(date).then(function (dateColumn) {
-        return getSheetName(date) + "!" + dateColumn + start + ":" + dateColumn + end;
-      });
-    }
+      function getDateRange(date, start, end) {
+        return getColumn(date).then(function (dateColumn) {
+          return getSheetName(date) + "!" + dateColumn + start + ":" + dateColumn + end;
+        });
+      }
       
       function getDateRanges(date, days, start, end) {
         var datesArray = [], tmpDate;
