@@ -46,10 +46,10 @@
 
           return getDateRanges(data.date, data.days, room.startRow, room.startRow + room.beds.length).then(function (dateRanges) {
             var cellData = dateRanges.map(function (dateRange) {
-              var cellValues = new Array(room.beds.length);
-              console.log(cellValues);
-              cellValues =  cellValues.map(function () { console.log(data.name); return data.name; });
-              console.log(cellValues, data);
+              var cellValues = [];
+              for(var i = 0; i < room.beds.length; i++) {
+                cellValues.push(data.name);
+              }
               
               return {
                 range: dateRange,
