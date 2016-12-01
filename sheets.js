@@ -39,6 +39,7 @@
     
       /* Update the rooms for an entry */
       function addRoomEntry(data) {
+        console.log(data);
         return checkRoomAvailability(data.room, data.number, data.date, data.days).then(function (room) {
           if (!room) {
             return false
@@ -88,7 +89,7 @@
              ranges: dateRanges,
              majorDimension: "COLUMNS"
           }).then(function (response) {
-            var availableBeds = [];
+            room.availableBeds = [];
             
             for (var i = 0; i < room.beds.length; i++) {
               var bedAvailable = true;
@@ -100,12 +101,12 @@
               });
               
               if (bedAvailable) {
-                availableBeds.push(i);
+                room.availableBeds.push(i);
               }
             }
 
             // Check if we have enough beds available
-            if (availableBeds.length >= numberBeds) {
+            if (room.availableBeds.length >= numberBeds) {
               return room;
             } else {
               return false
