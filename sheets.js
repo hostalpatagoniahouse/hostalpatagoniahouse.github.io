@@ -31,9 +31,13 @@
         });
       }
 
+      function getNameWithShortData(data) {
+        return (data.source + " " + data.name + " " + data.number + "p-" + data.days + "n-#" + data.roomType + "-" + data.arrivalHour + "h")
+      }
+
       function convertToBookingRow(data) {
         return [
-          data.source + " " + data.name + " " + data.number + "p-" + data.days + "n-#" + data.roomType + "-" + data.arrivalHour + "h",
+          getNameWithShortData(data),
           data.roomAndBeds,
           data.country,
           utils.toSheetsDate(data.date),
@@ -57,7 +61,7 @@
           }
 
           return getDateRanges(data.date, data.days, room.startRow, room.startRow + room.beds.length).then(function (dateRanges) {
-            var cellData = dateRanges.map(function (dateRange) {
+            var cellData = dateRanges.map(function (dateRange, index) {
               var cellValues = [], bedsUsed = 0, bedNames = [];
 
               for(var i = 0; i < room.beds.length; i++) {
@@ -66,7 +70,19 @@
               
               // Set the beds that are available for writing
               for(var i = 0; i < data.number; i++) {
-                cellValues[room.availableBeds[i]] = data.name;
+                var cellName = data.name;
+
+                // Handle the top left cell
+                if (i === 0 && index === 0) {
+                  cellName = getNameWithShortData(data);
+                }
+
+                // Handle the top right cell
+                if (i === 0 && index === (dateRanges.length - 1) && data.priceWithTax) {
+                  cellName = data.name + " " + data.priceWithTax;
+                }
+
+                cellValues[room.availableBeds[i]] = cellName;
                 bedNames.push(room.beds[room.availableBeds[i]]);
               }
 
