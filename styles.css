@@ -6,3 +6,7 @@
 .invisible {
 	visibility: hidden;
 }
+
+md-input-container {
+  margin: 8px 0;
+}
