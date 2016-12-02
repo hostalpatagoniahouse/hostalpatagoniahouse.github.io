@@ -8,12 +8,15 @@
       $rootScope.state = "loading";
 
       angular.element(document).on("gapiLoaded", function () {
-        $rootScope.$broadcast("gapiLoaded");
+        $rootScope.$apply(function () {
+          $rootScope.$broadcast("gapiLoaded");
+        })
       });
       
     });
 
   window.gapiLoaded = function () {
+    console.log("Google API Loaded");
     angular.element(document).triggerHandler("gapiLoaded");
   }
 })();
