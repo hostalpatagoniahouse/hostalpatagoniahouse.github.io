@@ -32,7 +32,7 @@
       }
 
       function getNameWithShortData(data) {
-        return (data.source + " " + data.name + " " + data.number + "p-" + data.days + "n-#" + data.roomType + "-" + data.arrivalHour + "h")
+        return (data.source + " " + data.name + " " + data.number + "p-" + data.days + "n-#" + data.roomType + (data.arrivalHour ? "-" + data.arrivalHour + "h" : ""));
       }
 
       function convertToBookingRow(data) {
@@ -74,7 +74,7 @@
 
                 // Handle the top left cell
                 if (i === 0 && index === 0) {
-                  cellName = getNameWithShortData(data);
+                  cellName = data.source + " " + data.name + " #" + data.roomType + (data.arrivalHour ? "-" + data.arrivalHour + "h" : "");
                 }
 
                 // Handle the top right cell

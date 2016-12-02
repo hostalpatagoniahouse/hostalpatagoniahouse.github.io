@@ -15,11 +15,11 @@
       ////////////////////////////////
       
       /* Authorize the sheets API */
-      function authorize() {
+      function authorize(immediate) {
         var deferred = $q.defer();
-        
+
         gapi.auth.authorize(
-          { client_id: $rootScope.config.apiClientId, scope: SCOPES, immediate: false }
+          { client_id: $rootScope.config.apiClientId, scope: SCOPES, immediate: immediate || false }
         ).then(loadSheetsApi).then(function (response) {
           deferred.resolve(response);
         }, function (response) {

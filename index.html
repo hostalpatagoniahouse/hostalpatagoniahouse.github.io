@@ -13,7 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-aria.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.1/angular-material.min.js"></script>
-    <script src="https://apis.google.com/js/client.js"></script>
+    
     <script src="/polyfill-array-find.js"></script>
     <script src="/app.js"></script>
     <script src="/config-controller.js"></script>
@@ -21,48 +21,54 @@
     <script src="/utils.js"></script>
     <script src="/sheets.js"></script>
     <script src="/entry-controller.js"></script>
+
+    <script src="https://apis.google.com/js/client.js?onload=gapiLoaded"></script>
   </head>
   
   <body>
     <div layout-padding>
-      <div ng-controller="ConfigController" ng-hide="configComplete" class="base-container md-whiteframe-z1">
+      <div ng-show="state === 'loading'">
+        <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+      </div>
+
+      <div ng-controller="ConfigController" ng-show="state === 'config'" class="base-container md-whiteframe-z1">
         <md-toolbar class="md-primary">
           <div class="md-toolbar-tools">
             <h2>Configuración</h2>
           </div>
         </md-toolbar>
 
-        <form ng-submit="saveConfig()">
+        <form ng-submit="saveConfig()" name="configForm">
           <div layout="row">
             <md-input-container>
               <label>Porcentaje de impuesto</label>
-              <input type="number" min="0" max="100" ng-model="config.taxPercentage" />
+              <input type="number" min="0" max="100" ng-model="config.taxPercentage" required />
             </md-input-container>
           </div>
 
           <div layout="row">
             <md-input-container flex>
               <label>Identificación de API Google</label>
-              <input type="text" ng-model="config.apiClientId" />
+              <input type="text" ng-model="config.apiClientId" required />
             </md-input-container>
           </div>
 
           <div layout="row">
             <md-input-container flex>
               <label>ID de lista de reservas</label>
-              <input type="text" ng-model="config.bookingSheetId" />
+              <input type="text" ng-model="config.bookingSheetId" required />
             </md-input-container>
 
             <md-input-container flex>
               <label>Nombre de la hoja en la lista de reservas</label>
-              <input type="text" ng-model="config.bookingSheet" />
+              <input type="text" ng-model="config.bookingSheet" required />
             </md-input-container>
           </div>
 
           <div layout="row">
             <md-input-container flex>
               <label>ID de calendario de reservas</label>
-              <input type="text" ng-model="config.roomsSheetId" />
+              <input type="text" ng-model="config.roomsSheetId" required />
             </md-input-container>
           </div>
           
@@ -71,67 +77,68 @@
           </div>
 
           <div layout="row" layout-align="start center">
-            <md-button type="submit" class="md-raised md-primary">Continuar</md-button>
+            <md-button type="submit" class="md-raised md-primary" ng-disabled="configForm.$invalid">Continuar</md-button>
             <md-progress-circular md-mode="indeterminate" md-diameter="25" ng-show="loading"></md-progress-circular>
           </div>
         </form>
       </div>
 
-      <div ng-controller="EntryController" ng-show="configComplete" class="base-container md-whiteframe-z1">
+      <div ng-controller="EntryController as entryCtrl" ng-show="state === 'entry'" class="base-container md-whiteframe-z1">
         <md-toolbar class="md-primary">
           <div class="md-toolbar-tools">
             <h2>Agregar Reserva</h2>
           </div>
         </md-toolbar>
 
-        <form ng-submit="addEntry()">
+        <form ng-submit="addEntry()" name="entryCtrl.form">
           <div layout="row">
-            <md-input-container flex>
-              <label>Nombre</label>
-              <input type="text" ng-model="entry.name" autofocus />
-            </md-input-container>
-
-            <md-input-container flex>
-              <label>Fuente</label>
-              <md-select ng-model="entry.source">
-                <md-option value="[D]">Directo</md-option>
-                <md-option value="[H]">Hostelworld</md-option>
-                <md-option value=[B]"">Booking</md-option>
-              </md-select>
+            <md-input-container md-no-float flex>
+              <md-radio-group layout="row" class="md-primary" ng-model="entry.source" ng-disabled="adding" required>
+                <md-radio-button value="[H]">Hostelworld</md-radio-button>
+                <md-radio-button value="[B]">Booking</md-radio-button>
+                <md-radio-button value="[D]">Directo</md-radio-button>
+              </md-radio-group>
             </md-input-container>
           </div>
           
           <div layout="row">
             <md-input-container flex>
-              <label>Fecha de check-in</label>
-              <md-datepicker ng-model="entry.date" ng-change="checkRooms()"></md-datepicker>
+              <label>Nombre</label>
+              <input type="text" ng-model="entry.name" ng-disabled="adding" id="nameInput" required autofocus />
+            </md-input-container>
+          </div>
+
+          <div layout="row">
+            <md-input-container flex="2">
+              <label>Fecha</label>
+              <md-datepicker ng-model="entry.date" ng-change="checkRooms()" ng-disabled="adding" required></md-datepicker>
             </md-input-container>
 
             <md-input-container flex>
-              <label>Cantidad de personas</label>
-              <input type="number" min="1" max="10" ng-model="entry.number" ng-change="checkRooms()" />
+              <label># Personas</label>
+              <input type="number" min="1" max="10" ng-model="entry.number" ng-change="checkRooms()" ng-disabled="adding" required />
             </md-input-container>
             
             <md-input-container flex>
-              <label>Días</label>
-              <input type="number" min="1" ng-model="entry.days" ng-change="checkRooms()" />
+              <label># Noches</label>
+              <input type="number" min="1" ng-model="entry.days" ng-change="checkRooms()" ng-disabled="adding" required />
             </md-input-container>
 
             <md-input-container flex>
-              <label>Tipo de habitación</label>
-              <input type="number" min="0" ng-model="entry.roomType" />
+              <label>Tipo de hab</label>
+              <input type="number" min="0" ng-model="entry.roomType" ng-disabled="adding" required />
             </md-input-container>
 
             <md-input-container flex>
               <label>Hora de llegada</label>
-              <input type="number" min="0" max="24" ng-model="entry.arrivalHour" />
+              <input type="number" min="0" max="24" ng-model="entry.arrivalHour" ng-disabled="adding" />
             </md-input-container>
           </div>
           
           <div layout="row" layout-align="start center">
             <md-input-container flex>
               <label>Habitaciones disponibles</label>
-              <md-select ng-model="entry.room" ng-disabled="roomList.length < 1">
+              <md-select ng-model="entry.room" ng-disabled="adding" required>
                 <md-option ng-repeat="room in roomList" ng-value="room">{{ room.name }} (#{{ room.beds.length }}) - {{ room.availableBeds.length }} disp.</md-option>
               </md-select>
             </md-input-container>
@@ -146,40 +153,44 @@
           <div layout="row">
             <md-input-container flex>
               <label>Precio sin impuesto</label>
-              <input type="number" ng-model="entry.priceWithoutTax" ng-change="updatePrice()" />
+              <input type="number" ng-model="entry.priceWithoutTax" ng-change="updatePrice()" ng-disabled="adding" required />
             </md-input-container>
 
             <md-input-container flex>
               <label>Precio con impuesto</label>
-              <input type="number" ng-model="entry.priceWithTax" />
+              <input type="number" ng-model="entry.priceWithTax" ng-disabled="adding" required />
             </md-input-container>
           </div>
 
           <div layout="row">
             <md-input-container flex>
               <label>País</label>
-              <input type="text" ng-model="entry.country" />
+              <input type="text" ng-model="entry.country" ng-disabled="adding" />
             </md-input-container>
           </div>
 
           <div layout="row">
             <md-input-container flex>
               <label>Tarjeta de crédito</label>
-              <input type="text" ng-model="entry.cardNumber" />
+              <input type="text" ng-model="entry.cardNumber" ng-disabled="adding" />
             </md-input-container>
           </div>
 
           <div layout="row">
             <md-input-container flex>
               <label>Comentarios</label>
-              <input type="text" ng-model="entry.comments" />
+              <input type="text" ng-model="entry.comments" ng-disabled="adding" />
             </md-input-container>
           </div>
 
           <div layout="row" layout-align="start center">
-            <md-button type="submit" class="md-raised md-primary" ng-disabled="adding">Ingresar reserva</md-button>
+            <md-button type="submit" class="md-raised md-primary" ng-disabled="adding || entryCtrl.form.$invalid">Ingresar reserva</md-button>
+            
             <md-progress-circular md-mode="indeterminate" md-diameter="25" ng-show="adding"></md-progress-circular>
+            
             <md-button type="button" class="md-raised" ng-disabled="adding" ng-click="clear()">Limpiar</md-button>
+
+            <md-button type="button" class="md-raised" ng-disabled="adding" ng-click="showConfig()">Configuración</md-button>
           </div>
         </form>
       </div>

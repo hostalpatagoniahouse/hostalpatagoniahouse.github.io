@@ -2,14 +2,20 @@
 
 (function () {
   angular.module("app")
-    .controller("EntryController", function ($scope, $rootScope, utils, sheetsService, $q) {
+    .controller("EntryController", function ($scope, $rootScope, utils, sheetsService, $q, $mdToast, $anchorScroll) {
+      var ctrl = this;
+
       $scope.adding = false;
       $scope.roomsLoading = false;
 
       $scope.clear = function () {
+        if (ctrl.form) {
+          ctrl.form.$setPristine();
+          ctrl.form.$setUntouched();
+        }
         $scope.entry = {};
         $scope.entry.date = new Date();
-        $scope.entry.source = "[D]"
+        $scope.entry.source = "[H]"
         $scope.roomList = [];
       }
 
@@ -18,9 +24,15 @@
       $scope.addEntry = function () {
         $scope.adding = true;
 
-        sheetsService.addBooking($scope.entry).finally(function () {
-          $scope.adding = false;
-        });
+        sheetsService.addBooking($scope.entry)
+          .then(function () {
+            $scope.clear();
+            $anchorScroll();
+            $mdToast.show($mdToast.simple().textContent("Reserva agregada").hideDelay(5000));
+          })
+          .finally(function () {
+            $scope.adding = false;
+          });
       };
       
       var checkRoomsRequestId = 0;
@@ -64,6 +76,11 @@
 
       $scope.updatePrice = function () {
         $scope.entry.priceWithTax = ($scope.entry.priceWithoutTax || 0) * (100 + $rootScope.config.taxPercentage) / 100;
+      }
+
+
+      $scope.showConfig = function () {
+        $rootScope.state = "config";
       }
     });
 })();
