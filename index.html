@@ -27,6 +27,7 @@
     <script src="/utils.js"></script>
     <script src="/sheets.js"></script>
     <script src="/entry-controller.js"></script>
+    <script src="/import-dialog-controller.js"></script>
 
     <script src="https://apis.google.com/js/client.js?onload=gapiLoaded"></script>
   </head>
@@ -93,6 +94,12 @@
         <md-toolbar class="md-primary">
           <div class="md-toolbar-tools">
             <h2>Agregar Reserva</h2>
+
+            <span flex></span>
+
+            <md-button ng-click="import($event)">
+              Importar
+            </md-button>
           </div>
         </md-toolbar>
 

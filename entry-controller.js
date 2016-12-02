@@ -2,7 +2,7 @@
 
 (function () {
   angular.module("app")
-    .controller("EntryController", function ($scope, $rootScope, utils, sheetsService, $q, $mdToast, $anchorScroll) {
+    .controller("EntryController", function ($scope, $rootScope, utils, sheetsService, $q, $mdToast, $anchorScroll, $mdDialog) {
       var ctrl = this;
 
       $scope.adding = false;
@@ -81,6 +81,29 @@
 
       $scope.showConfig = function () {
         $rootScope.state = "config";
+      }
+
+      $scope.import = function (event) {
+        $mdDialog.show({
+          templateUrl: "/import-dialog.tmpl.html",
+          targetEvent: event,
+          controller: "ImportDialogController"
+        }).then(function (importedEntry) {
+          $scope.clear();
+          $scope.entry = importedEntry;
+
+          $scope.checkRooms();
+          if ($scope.entry.priceWithoutTax) {
+            $scope.updatePrice();
+          }
+
+          $mdToast.show($mdToast.simple().textContent("Data imported"));
+        }).catch(function (error) {
+
+          if (error) {
+            $mdToast.show($mdToast.simple().textContent("Failed to import data"));
+          }
+        });
       }
     });
 })();

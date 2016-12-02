@@ -11,11 +11,13 @@
       $mdDateLocaleProvider.shortDays = ['D', 'L', 'Ma','Mi' ,'J','V','S'];
 
       $mdDateLocaleProvider.parseDate = function(dateString) {
+        moment.locale("es")
         var m = moment(dateString, 'L', true);
         return m.isValid() ? m.toDate() : new Date(NaN);
       };
 
       $mdDateLocaleProvider.formatDate = function(date) {
+        moment.locale("es")
         var m = moment(date);
         return m.isValid() ? m.format('L') : '';
       };

@@ -1,0 +1,31 @@
+<md-dialog>
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Importar</h2>
+        <span flex></span>
+        <md-button ng-click="cancel()">Cerra</md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <p>Press CTRL + A on the hostelworld booking page to select the full page. Copy this and paste it in the text box below to import data. This may not import all data in some cases and may stop working if the hostelworld website changes so check the data after you import it.</p>
+
+        <md-input-container class="md-block">
+          <label>Paste here</label>
+          <textarea ng-model="pastedData" rows="8" md-autofocus></textarea>
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button class="md-raised md-primary" ng-disabled="!pastedData" ng-click="import(pastedData)">
+       Importar
+      </md-button>
+      <md-button class="md-raised" ng-click="cancel()">
+        Cancelar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
