@@ -1,6 +1,24 @@
+.main-container {
+  padding: 8px;
+}
+
+@media (max-width: 959px) {
+  .main-container {
+    padding: 0;
+  }
+}
+
 .base-container {
   border-radius: 4px;
   max-width: 960px;
+}
+
+.base-container > md-toolbar {
+  border-radius: 3px 3px 0 0;
+}
+
+.base-container > form {
+  padding: 8px;
 }
 
 .invisible {
