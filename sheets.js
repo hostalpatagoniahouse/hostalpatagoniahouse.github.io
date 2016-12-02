@@ -215,20 +215,16 @@
             var rooms = [];
           
             // run through the cells, identifying and adding rooms
-            var cell, cellList = response.result.values[0];
+            var lastRoom = null, cell, cellList = response.result.values[0];
             for (var i = 0; i < cellList.length; i++) {
               cell = cellList[i];
               
               // Rooms should start with "HAB" and have a - character separating the room name and the bed name
-              // process the cell only if these conditions are met. We assume that rooms are vertically continuous
+              // process the cell only if these conditions are met.
+              // We assume that each room is vertically continuous with no gaps between the bed rows
               if (!(cell.substring(0, 3) === "HAB" && cell.indexOf("-") > -1)) {
-                if (rooms.length > 0) {
-                  // Exit the loop if rooms have been found- this means were at the end
-                  break;
-                } else {
-                  // Skip the cell and continue the loop if rooms have not yet been found - these are the beginning cells to skip
-                  continue;
-                }
+                lastRoom = null;
+                continue;
               }
               
               var splitCell = cell.split("-");
@@ -236,7 +232,7 @@
               var bedName = splitCell.join("-").trim();
               
               // If this belongs to the previous room
-              if (rooms.length > 0 && rooms[rooms.length - 1].name === roomName) {
+              if (roomName === lastRoom) {
                 rooms[rooms.length - 1].beds.push(bedName);
               } else {
                 // Otherwise add a new room object
@@ -245,6 +241,7 @@
                   startRow: i + 1,
                   beds: [bedName]
                 });
+                lastRoom = roomName;
               } 
             }
             
