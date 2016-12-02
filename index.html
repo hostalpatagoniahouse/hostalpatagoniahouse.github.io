@@ -13,9 +13,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-aria.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.1/angular-material.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/locale/es.js"></script>
     
     <script src="/polyfill-array-find.js"></script>
     <script src="/app.js"></script>
+    <script src="/datepicker-config.js"></script>
     <script src="/config-controller.js"></script>
     <script src="/gapi-service.js"></script>
     <script src="/utils.js"></script>
@@ -94,9 +97,9 @@
           <div layout="row">
             <md-input-container md-no-float flex>
               <md-radio-group layout="row" class="md-primary" ng-model="entry.source" ng-disabled="adding" required>
-                <md-radio-button value="[H]">Hostelworld</md-radio-button>
-                <md-radio-button value="[B]">Booking</md-radio-button>
-                <md-radio-button value="[D]">Directo</md-radio-button>
+                <md-radio-button value="H">Hostelworld</md-radio-button>
+                <md-radio-button value="B">Booking</md-radio-button>
+                <md-radio-button value="D">Directo</md-radio-button>
               </md-radio-group>
             </md-input-container>
           </div>
@@ -126,7 +129,7 @@
 
             <md-input-container flex>
               <label>Tipo de hab</label>
-              <input type="number" min="0" ng-model="entry.roomType" ng-disabled="adding" required />
+              <input type="number" min="0" ng-model="entry.roomType" ng-disabled="adding" />
             </md-input-container>
 
             <md-input-container flex>
@@ -153,7 +156,7 @@
           <div layout="row">
             <md-input-container flex>
               <label>Precio sin impuesto</label>
-              <input type="number" ng-model="entry.priceWithoutTax" ng-change="updatePrice()" ng-disabled="adding" required />
+              <input type="number" ng-model="entry.priceWithoutTax" ng-change="updatePrice()" ng-disabled="adding" />
             </md-input-container>
 
             <md-input-container flex>

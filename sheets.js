@@ -31,13 +31,35 @@
         });
       }
 
-      function getNameWithShortData(data) {
-        return (data.source + " " + data.name + " " + data.number + "p-" + data.days + "n-#" + data.roomType + (data.arrivalHour ? "-" + data.arrivalHour + "h" : ""));
+      function getNameWithShortData(data, includeNumberAndDays) {
+        var outputArray = [], dataFields = [];
+
+        if (includeNumberAndDays) {
+          dataFields.push(data.number + "p");
+          dataFields.push(data.days + "n");
+        }
+
+        if (data.roomType) {
+          dataFields.push("#" + data.roomType);
+        }
+
+        if (data.arrivalHour) {
+          dataFields.push(data.arrivalHour + "h");
+        }
+
+        outputArray.push("[" + data.source + "]");
+        outputArray.push(data.name)
+
+        if (dataFields.length) {
+          outputArray.push(dataFields.join("-"));
+        }
+
+        return outputArray.join(" ");
       }
 
       function convertToBookingRow(data) {
         return [
-          getNameWithShortData(data),
+          getNameWithShortData(data, true),
           data.roomAndBeds,
           data.country,
           utils.toSheetsDate(data.date),
@@ -72,14 +94,17 @@
               for(var i = 0; i < data.number; i++) {
                 var cellName = data.name;
 
-                // Handle the top left cell
-                if (i === 0 && index === 0) {
-                  cellName = data.source + " " + data.name + " #" + data.roomType + (data.arrivalHour ? "-" + data.arrivalHour + "h" : "");
-                }
+                // Special conditions for the top cells
+                if (i === 0) {
+                  if (index === 0) {
+                    // Handle the top left cell
+                    cellName = getNameWithShortData(data, false);
+                  } 
 
-                // Handle the top right cell
-                if (i === 0 && index === (dateRanges.length - 1) && data.priceWithTax) {
-                  cellName = data.name + " " + data.priceWithTax;
+                  // Add the price for the top last cell
+                  if (index === (dateRanges.length - 1) && data.priceWithTax) {
+                    cellName = cellName + " " + data.priceWithTax;
+                  }
                 }
 
                 cellValues[room.availableBeds[i]] = cellName;

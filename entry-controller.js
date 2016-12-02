@@ -15,7 +15,7 @@
         }
         $scope.entry = {};
         $scope.entry.date = new Date();
-        $scope.entry.source = "[H]"
+        $scope.entry.source = "H"
         $scope.roomList = [];
       }
 
@@ -75,7 +75,7 @@
 
 
       $scope.updatePrice = function () {
-        $scope.entry.priceWithTax = ($scope.entry.priceWithoutTax || 0) * (100 + $rootScope.config.taxPercentage) / 100;
+        $scope.entry.priceWithTax = Math.round(($scope.entry.priceWithoutTax || 0) * (100 + $rootScope.config.taxPercentage) / 100);
       }
 
 
