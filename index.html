@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Patagonia House - Sistema de Reservas</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.1/angular-material.min.css" />
     <link rel="stylesheet" type="text/css" href="/styles.css" />
@@ -56,7 +59,7 @@
             </md-input-container>
           </div>
 
-          <div layout="row">
+          <div layout="row" layout="column">
             <md-input-container flex>
               <label>ID de lista de reservas</label>
               <input type="text" ng-model="config.bookingSheetId" required />
@@ -94,15 +97,13 @@
         </md-toolbar>
 
         <form ng-submit="addEntry()" name="entryCtrl.form">
-          <div layout="row">
-            <md-input-container md-no-float flex>
-              <md-radio-group layout="row" class="md-primary" ng-model="entry.source" ng-disabled="adding" required>
-                <md-radio-button value="H">Hostelworld</md-radio-button>
-                <md-radio-button value="B">Booking</md-radio-button>
-                <md-radio-button value="D">Directo</md-radio-button>
-              </md-radio-group>
-            </md-input-container>
-          </div>
+          <md-input-container class="md-block">
+            <md-radio-group layout="row" class="md-primary" ng-model="entry.source" ng-disabled="adding" required>
+              <md-radio-button value="H" flex>Hostelworld</md-radio-button>
+              <md-radio-button value="B" flex>Booking</md-radio-button>
+              <md-radio-button value="D" flex>Directo</md-radio-button>
+            </md-radio-group>
+          </md-input-container>
           
           <div layout="row">
             <md-input-container flex>
@@ -111,34 +112,40 @@
             </md-input-container>
           </div>
 
-          <div layout="row">
-            <md-input-container flex="2">
-              <label>Fecha</label>
-              <md-datepicker ng-model="entry.date" ng-change="checkRooms()" ng-disabled="adding" required></md-datepicker>
-            </md-input-container>
+          <div layout="row" layout-sm="column" layout-xs="column">
+            <div layout="row">
+              <md-input-container flex="2">
+                <label>Fecha</label>
+                <md-datepicker ng-model="entry.date" ng-change="checkRooms()" ng-disabled="adding" required></md-datepicker>
+              </md-input-container>
+            </div>
 
-            <md-input-container flex>
-              <label># Personas</label>
-              <input type="number" min="1" max="10" ng-model="entry.number" ng-change="checkRooms()" ng-disabled="adding" required />
-            </md-input-container>
-            
-            <md-input-container flex>
-              <label># Noches</label>
-              <input type="number" min="1" ng-model="entry.days" ng-change="checkRooms()" ng-disabled="adding" required />
-            </md-input-container>
+            <div layout="row" layout-xs="column">
+              <md-input-container flex>
+                <label># Personas</label>
+                <input type="number" min="1" max="10" ng-model="entry.number" ng-change="checkRooms()" ng-disabled="adding" required />
+              </md-input-container>
+              
+              <md-input-container flex>
+                <label># Noches</label>
+                <input type="number" min="1" ng-model="entry.days" ng-change="checkRooms()" ng-disabled="adding" required />
+              </md-input-container>
+            </div>
 
-            <md-input-container flex>
-              <label>Tipo de hab</label>
-              <input type="number" min="0" ng-model="entry.roomType" ng-disabled="adding" />
-            </md-input-container>
+            <div layout="row" layout-xs="column">
+              <md-input-container flex>
+                <label>Tipo de hab</label>
+                <input type="number" min="0" ng-model="entry.roomType" ng-disabled="adding" />
+              </md-input-container>
 
-            <md-input-container flex>
-              <label>Hora de llegada</label>
-              <input type="number" min="0" max="24" ng-model="entry.arrivalHour" ng-disabled="adding" />
-            </md-input-container>
+              <md-input-container flex>
+                <label>Hora de llegada</label>
+                <input type="number" min="0" max="24" ng-model="entry.arrivalHour" ng-disabled="adding" />
+              </md-input-container>
+            </div>
           </div>
           
-          <div layout="row" layout-align="start center">
+          <div layout="row" layout-align="start center" layout-xs="column"  layout-align-xs="start stretch">
             <md-input-container flex>
               <label>Habitaciones disponibles</label>
               <md-select ng-model="entry.room" ng-disabled="adding" required>
@@ -153,7 +160,7 @@
             <md-progress-circular md-mode="indeterminate" md-diameter="20" ng-class="{ invisible: !roomsLoading }"></md-progress-circular>
           </div>
 
-          <div layout="row">
+          <div layout="row" layout-xs="column">
             <md-input-container flex>
               <label>Precio sin impuesto</label>
               <input type="number" ng-model="entry.priceWithoutTax" ng-change="updatePrice()" ng-disabled="adding" />
@@ -165,7 +172,7 @@
             </md-input-container>
           </div>
 
-          <div layout="row">
+          <div layout="row" layout-xs="column">
             <md-input-container flex>
               <label>País</label>
               <input type="text" ng-model="entry.country" ng-disabled="adding" />
@@ -184,7 +191,7 @@
             </md-input-container>
           </div>
 
-          <div layout="row" layout-align="start center">
+          <div layout="row" layout-align="start center" layout-xs="column" layout-align-xs="start stretch">
             <md-button type="submit" class="md-raised md-primary" ng-disabled="adding || entryCtrl.form.$invalid">Ingresar reserva</md-button>
             
             <md-progress-circular md-mode="indeterminate" md-diameter="25" ng-show="adding"></md-progress-circular>

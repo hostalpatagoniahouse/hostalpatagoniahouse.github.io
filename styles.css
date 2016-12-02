@@ -10,3 +10,9 @@
 md-input-container {
   margin: 8px 0;
 }
+
+md-radio-button {
+	overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
