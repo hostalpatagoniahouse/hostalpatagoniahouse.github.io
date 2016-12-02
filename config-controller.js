@@ -13,8 +13,10 @@
         $scope.$on("gapiLoaded", function () {
           gapiService.authorize(true)
             .then(function () {
+              console.log("resolve")
               $rootScope.state = "entry";
             }).catch(function () {
+              console.log("reject")
               $rootScope.state = "config";
             });
         });

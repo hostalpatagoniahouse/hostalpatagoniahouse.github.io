@@ -13,7 +13,9 @@
       
     });
 
+  console.log("setup")
   window.gapiLoaded = function () {
+    console.log("gapi loaded")
     angular.element(document).triggerHandler("gapiLoaded");
   }
 })();
