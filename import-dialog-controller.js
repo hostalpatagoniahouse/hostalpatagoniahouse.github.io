@@ -88,8 +88,8 @@
           if (roomTypeMatches[1]) {
             currentRoomType = parseInt(roomTypeMatches[1], 0)
           }
-
-          if (index === 1) {
+          
+          if (index === 0) {
             roomType = currentRoomType
           } else {
             // If we have any room type that does not match invalidate the room type
