@@ -4,16 +4,17 @@
       <div class="md-toolbar-tools">
         <h2>Importar</h2>
         <span flex></span>
-        <md-button ng-click="cancel()">Cerra</md-button>
+        <md-button ng-click="cancel()">Cerrar</md-button>
       </div>
     </md-toolbar>
 
     <md-dialog-content>
       <div class="md-dialog-content">
-        <p>Press CTRL + A on the hostelworld booking page to select the full page. Copy this and paste it in the text box below to import data. This may not import all data in some cases and may stop working if the hostelworld website changes so check the data after you import it.</p>
+        <p>
+        Presione CTRL + A en la página de hostelworld para seleccionar toda la página.Copie y pegue la información en el recuadro para importar los datos (no cambie nada). Puede ser que no se importen todos los datos en caso que hostelworld.com cambie la página. <strong>Revise los datos en el formulario después de importar.</strong></p>
 
         <md-input-container class="md-block">
-          <label>Paste here</label>
+          <label>Pegue aqui</label>
           <textarea ng-model="pastedData" rows="8" md-autofocus></textarea>
         </md-input-container>
       </div>

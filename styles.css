@@ -34,3 +34,29 @@ md-radio-button {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+md-input-container .hint {
+  /* Position the hint */
+  position: absolute;
+  left: 2px;
+  right: auto;
+  bottom: -14px;
+  /* Copy styles from ng-messages */
+  font-size: 12px;
+  line-height: 14px;
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  /* Set our own color */
+  color: #aaa; }
+md-input-container .hint.ng-hide,
+md-input-container .hint.ng-enter,
+md-input-container .hint.ng-leave.ng-leave-active {
+  bottom: 26px;
+  opacity: 0; }
+md-input-container .hint.ng-leave,
+md-input-container .hint.ng-enter.ng-enter-active {
+  bottom: 7px;
+  opacity: 1; }
+
+md-input-container.with-hint {
+  margin-bottom: 24px;
+}

@@ -153,11 +153,18 @@
           </div>
           
           <div layout="row" layout-align="start center" layout-xs="column"  layout-align-xs="start stretch">
-            <md-input-container flex>
-              <label>Habitaciones disponibles</label>
+            <md-input-container class="with-hint" flex>
+              <label>Habitación</label>
               <md-select ng-model="entry.room" ng-disabled="adding" required>
                 <md-option ng-repeat="room in roomList" ng-value="room">{{ room.name }} (#{{ room.beds.length }}) - {{ room.availableBeds.length }} disp.</md-option>
               </md-select>
+
+              <div class="hint">
+                <span ng-show="roomsLoading">Buscando habitaciones...</span>
+                <span ng-show="roomList.length > 0 && !entry.room">Seleccione una habitación</span>
+                <span ng-show="!canCheckRooms()">Ingresa la info de la reserva</span>
+                <span ng-show="canCheckRooms() && !roomsLoading && roomList.length === 0">No habitaciones disponibles</span>
+              </div>
             </md-input-container>
 
             <div>

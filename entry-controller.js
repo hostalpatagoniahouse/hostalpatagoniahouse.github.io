@@ -34,6 +34,10 @@
             $scope.adding = false;
           });
       };
+
+      $scope.canCheckRooms = function () {
+        return ($scope.entry.number && $scope.entry.date && $scope.entry.days);
+      }
       
       var checkRoomsRequestId = 0;
 
@@ -46,7 +50,7 @@
         $scope.entry.room = null;
 
         // check rooms only if all data is available
-        if (!$scope.entry.number || !$scope.entry.date || !$scope.entry.days) {
+        if (!$scope.canCheckRooms()) {
           $scope.roomsLoading = false;
           return;
         }
@@ -61,9 +65,6 @@
             }
 
             $scope.roomList = response.filter(function (x) { return x; });
-            if ($scope.roomList.length > 0) {
-              $scope.entry.room = $scope.roomList[0];
-            }
           }).finally(function () {
             if (checkRoomsRequestId !== currentRequestId) {
               return;
@@ -97,11 +98,11 @@
             $scope.updatePrice();
           }
 
-          $mdToast.show($mdToast.simple().textContent("Data imported"));
+          $mdToast.show($mdToast.simple().textContent("Datos importados"));
         }).catch(function (error) {
 
           if (error) {
-            $mdToast.show($mdToast.simple().textContent("Failed to import data"));
+            $mdToast.show($mdToast.simple().textContent("No se puede importar los datos"));
           }
         });
       }
