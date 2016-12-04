@@ -69,7 +69,7 @@
           data.arrivalHour,
           data.priceWithoutTax,
           data.priceWithTax,
-          data.bookingDate,
+          utils.toSheetsDate(data.bookingDate),
           data.cardNumber,
           data.comments
         ];
