@@ -120,14 +120,14 @@
           </div>
 
           <div layout="row" layout-sm="column" layout-xs="column">
-            <div layout="row">
-              <md-input-container flex="2">
+            <div layout="row" flex="2">
+              <md-input-container flex>
                 <label>Fecha</label>
                 <md-datepicker ng-model="entry.date" ng-change="checkRooms()" ng-disabled="adding" required></md-datepicker>
               </md-input-container>
             </div>
 
-            <div layout="row" layout-xs="column">
+            <div layout="row" layout-xs="column" flex>
               <md-input-container flex>
                 <label># Personas</label>
                 <input type="number" min="1" max="10" ng-model="entry.number" ng-change="checkRooms()" ng-disabled="adding" required />
@@ -139,7 +139,7 @@
               </md-input-container>
             </div>
 
-            <div layout="row" layout-xs="column">
+            <div layout="row" layout-xs="column" flex>
               <md-input-container flex>
                 <label>Tipo de hab</label>
                 <input type="number" min="0" ng-model="entry.roomType" ng-disabled="adding" />
@@ -195,6 +195,11 @@
             <md-input-container flex>
               <label>Tarjeta de crédito</label>
               <input type="text" ng-model="entry.cardNumber" ng-disabled="adding" />
+            </md-input-container>
+
+            <md-input-container flex>
+              <label>Fecha reserva</label>
+              <md-datepicker ng-model="entry.bookingDate" ng-disabled="adding"></md-datepicker>
             </md-input-container>
           </div>
 

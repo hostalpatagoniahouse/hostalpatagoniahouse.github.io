@@ -57,6 +57,15 @@
           console.log("Arrival date not found")
         }
 
+        entry.bookingDate = getCustomerDetail(customerDetails, "Booked")
+        if (entry.bookingDate) {
+          entry.bookingDate = entry.bookingDate.split(" ").slice(0, 3).join(" ")
+          entry.bookingDate = parseHostelworldDate(entry.bookingDate)
+        }
+        if (!entry.bookingDate) {
+          console.log("Booking date not found")
+        }
+
         var priceMatches = /Balance Due[^\n\r]*CLP ([\d,\.]+)/.exec(data)
         if (priceMatches[1]) {
           entry.priceWithoutTax = parseInt(priceMatches[1].replace(",", ""), 0)

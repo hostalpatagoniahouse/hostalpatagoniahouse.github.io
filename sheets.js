@@ -69,7 +69,7 @@
           data.arrivalHour,
           data.priceWithoutTax,
           data.priceWithTax,
-          null,
+          data.bookingDate,
           data.cardNumber,
           data.comments
         ];
