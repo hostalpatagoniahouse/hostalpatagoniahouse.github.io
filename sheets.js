@@ -74,23 +74,65 @@
           data.comments
         ];
       }
+
+      // Try to find an available lower bed in a room (a bed with a name ending with "B"). If not found returns -1. If found returns the bed index
+      function findAvailableLowerBed(room) {
+        for(var j = 0; j < room.availableBeds.length; j++) {
+          var currBedIndex = room.availableBeds[j];
+          var currBedName = room.beds[currBedIndex];
+
+          if (currBedName[currBedName.length - 1] === "B") {
+            return currBedIndex;
+          }
+        }
+
+        return -1;
+      }
+
+      // Returns the first available bed. The second parameter can prioritise lower beds
+      function findAvailableBed(room, preferLowerBeds) {
+        if (preferLowerBeds) {
+          // Check for a lower bed
+          var lowerBed = findAvailableLowerBed(room);
+          if (lowerBed > -1) {
+            return lowerBed;
+          }
+        }
+
+        // If no lower bed is found just use the first available bed
+        return room.availableBeds[0];
+      }
     
       /* Update the rooms for an entry */
       function addRoomEntry(data) {
         return checkRoomAvailability(data.room, data.number, data.date, data.days).then(function (room) {
           if (!room) {
-            return false
+            return false;
           }
+
+          var bedsChosen = [];
+
+          // Pick the beds to use
+          for(var i = 0; i < data.number; i++) {
+            var bedPicked = findAvailableBed(room, data.preferLowerBeds);
+            bedsChosen.push(bedPicked);
+            room.availableBeds.splice(room.availableBeds.indexOf(bedPicked), 1);
+          }
+
+          bedsChosen.sort();
+
+          // Include a string with the names of the room and all beds in the data passed on
+          data.roomAndBeds = room.name + " - " + bedsChosen.map(function (x) { return room.beds[x] }).join(",");
 
           return getDateRanges(data.date, data.days, room.startRow, room.startRow + room.beds.length).then(function (dateRanges) {
             var cellData = dateRanges.map(function (dateRange, index) {
-              var cellValues = [], bedsUsed = 0, bedNames = [];
+              var cellValues = [];
 
               for(var i = 0; i < room.beds.length; i++) {
                 cellValues.push(null);
               }
               
-              // Set the beds that are available for writing
+              // Set the beds chosen for writing
               for(var i = 0; i < data.number; i++) {
                 var cellName = data.name;
 
@@ -107,12 +149,8 @@
                   }
                 }
 
-                cellValues[room.availableBeds[i]] = cellName;
-                bedNames.push(room.beds[room.availableBeds[i]]);
+                cellValues[bedsChosen[i]] = cellName;
               }
-
-              // Include a string with the names of the room and all beds in the data passed on
-              data.roomAndBeds = room.name + " - " + bedNames.join(",");
               
               return {
                 range: dateRange,

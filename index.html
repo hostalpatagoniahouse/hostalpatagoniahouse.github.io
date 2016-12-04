@@ -175,6 +175,10 @@
           </div>
 
           <div layout="row" layout-xs="column">
+            <md-checkbox ng-model="entry.preferLowerBeds" class="md-primary" flex>Prioridad cama de abajo</md-checkbox>
+          </div>
+
+          <div layout="row" layout-xs="column">
             <md-input-container flex>
               <label>Precio sin impuesto</label>
               <input type="number" ng-model="entry.priceWithoutTax" ng-change="updatePrice()" ng-disabled="adding" />
