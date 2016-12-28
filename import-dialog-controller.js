@@ -20,6 +20,8 @@
       };
 
       function importHostelworld(data) {
+        data = data.split("\n").filter(function (x) { return x; }).join("\n");
+        
         var entry = {}
 
         var customerDetails = data.substring(data.indexOf("Customer Details"), data.indexOf("Room Details"))
@@ -84,6 +86,8 @@
         var roomType = null
 
         roomDetails.forEach(function (roomRow, index) {
+          roomRow = roomRow.trim();
+          
           var dateString = roomRow.split(" ").slice(0, 3).join(" ")
           var date = parseHostelworldDate(dateString)
           var relativeDate = moment(date).diff(entry.date, "days")
